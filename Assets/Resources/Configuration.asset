@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 648ca123e21641f8a09b29aa16d8bf3d, type: 3}
+  m_Name: Configuration
+  m_EditorClassIdentifier: 
+  channelsToInit:
+  - name: Sounds
+    channel: {fileID: -649929347553443847, guid: 74f231a9cd4352745b6f99c763b82416,
+      type: 2}
+    volumeProperty: Sounds
+  - name: Music
+    channel: {fileID: -6304438052564552317, guid: 74f231a9cd4352745b6f99c763b82416,
+      type: 2}
+    volumeProperty: Music
+  defaultSoundsChannel: {fileID: -649929347553443847, guid: 74f231a9cd4352745b6f99c763b82416,
+    type: 2}
+  defaultMusicChannel: {fileID: -6304438052564552317, guid: 74f231a9cd4352745b6f99c763b82416,
+    type: 2}
+  singletonPrefabs:
+  - {fileID: 4424853452609946062, guid: a1b3ad93deb07a548a18e49cc41b2122, type: 3}
