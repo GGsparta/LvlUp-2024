@@ -1,61 +1,96 @@
 {
     "name": "InputMap",
-    "maps": [],
-    "controlSchemes": [
+    "maps": [
         {
-            "name": "ZQSD",
-            "bindingGroup": "ZQSD",
-            "devices": [
+            "name": "Gameplay 2D",
+            "id": "b338e722-236d-4535-b48f-34ee7b2e94d7",
+            "actions": [
                 {
-                    "devicePath": "<Keyboard>",
-                    "isOptional": false,
-                    "isOR": false
+                    "name": "Walk",
+                    "type": "Value",
+                    "id": "ef391db3-e84d-42c7-b5fc-1ae39bb8e6e2",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Jump",
+                    "type": "Button",
+                    "id": "62dee314-1d02-4553-a0b6-0522082d177f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Pick up",
+                    "type": "Button",
+                    "id": "f986afb2-399c-4f45-8dc5-45e7644a0ea2",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
-            ]
-        },
-        {
-            "name": "YGHJ",
-            "bindingGroup": "YGHJ",
-            "devices": [
+            ],
+            "bindings": [
                 {
-                    "devicePath": "<Keyboard>",
-                    "isOptional": false,
-                    "isOR": false
-                }
-            ]
-        },
-        {
-            "name": "PLM%",
-            "bindingGroup": "PLM%",
-            "devices": [
+                    "name": "1D Axis",
+                    "id": "00beb6ac-f4fa-4e86-8851-18468a99a208",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Walk",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
                 {
-                    "devicePath": "<Keyboard>",
-                    "isOptional": false,
-                    "isOR": false
-                }
-            ]
-        },
-        {
-            "name": "5123",
-            "bindingGroup": "5123",
-            "devices": [
+                    "name": "negative",
+                    "id": "8e51aa73-0f73-4a58-8f40-ba75faac685e",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Walk",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
                 {
-                    "devicePath": "<Keyboard>",
-                    "isOptional": false,
-                    "isOR": false
-                }
-            ]
-        },
-        {
-            "name": "controller",
-            "bindingGroup": "controller",
-            "devices": [
+                    "name": "positive",
+                    "id": "32082310-86cc-41ff-9bd7-b5faf13c4ebb",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Walk",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
                 {
-                    "devicePath": "<Gamepad>",
-                    "isOptional": false,
-                    "isOR": false
+                    "name": "",
+                    "id": "ee8ae686-9846-4611-a140-61995602fa8c",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pick up",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "53f4093b-6d7b-480b-8c27-6d8b9e7c2b88",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }
-    ]
+    ],
+    "controlSchemes": []
 }

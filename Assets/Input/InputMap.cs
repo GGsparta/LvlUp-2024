@@ -22,65 +22,105 @@ public partial class @InputMap: IInputActionCollection2, IDisposable
     {
         asset = InputActionAsset.FromJson(@"{
     ""name"": ""InputMap"",
-    ""maps"": [],
-    ""controlSchemes"": [
+    ""maps"": [
         {
-            ""name"": ""ZQSD"",
-            ""bindingGroup"": ""ZQSD"",
-            ""devices"": [
+            ""name"": ""Gameplay 2D"",
+            ""id"": ""b338e722-236d-4535-b48f-34ee7b2e94d7"",
+            ""actions"": [
                 {
-                    ""devicePath"": ""<Keyboard>"",
-                    ""isOptional"": false,
-                    ""isOR"": false
+                    ""name"": ""Walk"",
+                    ""type"": ""Value"",
+                    ""id"": ""ef391db3-e84d-42c7-b5fc-1ae39bb8e6e2"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Jump"",
+                    ""type"": ""Button"",
+                    ""id"": ""62dee314-1d02-4553-a0b6-0522082d177f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Pick up"",
+                    ""type"": ""Button"",
+                    ""id"": ""f986afb2-399c-4f45-8dc5-45e7644a0ea2"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
-            ]
-        },
-        {
-            ""name"": ""YGHJ"",
-            ""bindingGroup"": ""YGHJ"",
-            ""devices"": [
+            ],
+            ""bindings"": [
                 {
-                    ""devicePath"": ""<Keyboard>"",
-                    ""isOptional"": false,
-                    ""isOR"": false
-                }
-            ]
-        },
-        {
-            ""name"": ""PLM%"",
-            ""bindingGroup"": ""PLM%"",
-            ""devices"": [
+                    ""name"": ""1D Axis"",
+                    ""id"": ""00beb6ac-f4fa-4e86-8851-18468a99a208"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Walk"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
                 {
-                    ""devicePath"": ""<Keyboard>"",
-                    ""isOptional"": false,
-                    ""isOR"": false
-                }
-            ]
-        },
-        {
-            ""name"": ""5123"",
-            ""bindingGroup"": ""5123"",
-            ""devices"": [
+                    ""name"": ""negative"",
+                    ""id"": ""8e51aa73-0f73-4a58-8f40-ba75faac685e"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Walk"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
                 {
-                    ""devicePath"": ""<Keyboard>"",
-                    ""isOptional"": false,
-                    ""isOR"": false
-                }
-            ]
-        },
-        {
-            ""name"": ""controller"",
-            ""bindingGroup"": ""controller"",
-            ""devices"": [
+                    ""name"": ""positive"",
+                    ""id"": ""32082310-86cc-41ff-9bd7-b5faf13c4ebb"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Walk"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
                 {
-                    ""devicePath"": ""<Gamepad>"",
-                    ""isOptional"": false,
-                    ""isOR"": false
+                    ""name"": """",
+                    ""id"": ""ee8ae686-9846-4611-a140-61995602fa8c"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pick up"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""53f4093b-6d7b-480b-8c27-6d8b9e7c2b88"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
-    ]
+    ],
+    ""controlSchemes"": []
 }");
+        // Gameplay 2D
+        m_Gameplay2D = asset.FindActionMap("Gameplay 2D", throwIfNotFound: true);
+        m_Gameplay2D_Walk = m_Gameplay2D.FindAction("Walk", throwIfNotFound: true);
+        m_Gameplay2D_Jump = m_Gameplay2D.FindAction("Jump", throwIfNotFound: true);
+        m_Gameplay2D_Pickup = m_Gameplay2D.FindAction("Pick up", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -138,49 +178,72 @@ public partial class @InputMap: IInputActionCollection2, IDisposable
     {
         return asset.FindBinding(bindingMask, out action);
     }
-    private int m_ZQSDSchemeIndex = -1;
-    public InputControlScheme ZQSDScheme
+
+    // Gameplay 2D
+    private readonly InputActionMap m_Gameplay2D;
+    private List<IGameplay2DActions> m_Gameplay2DActionsCallbackInterfaces = new List<IGameplay2DActions>();
+    private readonly InputAction m_Gameplay2D_Walk;
+    private readonly InputAction m_Gameplay2D_Jump;
+    private readonly InputAction m_Gameplay2D_Pickup;
+    public struct Gameplay2DActions
     {
-        get
+        private @InputMap m_Wrapper;
+        public Gameplay2DActions(@InputMap wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Walk => m_Wrapper.m_Gameplay2D_Walk;
+        public InputAction @Jump => m_Wrapper.m_Gameplay2D_Jump;
+        public InputAction @Pickup => m_Wrapper.m_Gameplay2D_Pickup;
+        public InputActionMap Get() { return m_Wrapper.m_Gameplay2D; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(Gameplay2DActions set) { return set.Get(); }
+        public void AddCallbacks(IGameplay2DActions instance)
         {
-            if (m_ZQSDSchemeIndex == -1) m_ZQSDSchemeIndex = asset.FindControlSchemeIndex("ZQSD");
-            return asset.controlSchemes[m_ZQSDSchemeIndex];
+            if (instance == null || m_Wrapper.m_Gameplay2DActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_Gameplay2DActionsCallbackInterfaces.Add(instance);
+            @Walk.started += instance.OnWalk;
+            @Walk.performed += instance.OnWalk;
+            @Walk.canceled += instance.OnWalk;
+            @Jump.started += instance.OnJump;
+            @Jump.performed += instance.OnJump;
+            @Jump.canceled += instance.OnJump;
+            @Pickup.started += instance.OnPickup;
+            @Pickup.performed += instance.OnPickup;
+            @Pickup.canceled += instance.OnPickup;
+        }
+
+        private void UnregisterCallbacks(IGameplay2DActions instance)
+        {
+            @Walk.started -= instance.OnWalk;
+            @Walk.performed -= instance.OnWalk;
+            @Walk.canceled -= instance.OnWalk;
+            @Jump.started -= instance.OnJump;
+            @Jump.performed -= instance.OnJump;
+            @Jump.canceled -= instance.OnJump;
+            @Pickup.started -= instance.OnPickup;
+            @Pickup.performed -= instance.OnPickup;
+            @Pickup.canceled -= instance.OnPickup;
+        }
+
+        public void RemoveCallbacks(IGameplay2DActions instance)
+        {
+            if (m_Wrapper.m_Gameplay2DActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IGameplay2DActions instance)
+        {
+            foreach (var item in m_Wrapper.m_Gameplay2DActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_Gameplay2DActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
         }
     }
-    private int m_YGHJSchemeIndex = -1;
-    public InputControlScheme YGHJScheme
+    public Gameplay2DActions @Gameplay2D => new Gameplay2DActions(this);
+    public interface IGameplay2DActions
     {
-        get
-        {
-            if (m_YGHJSchemeIndex == -1) m_YGHJSchemeIndex = asset.FindControlSchemeIndex("YGHJ");
-            return asset.controlSchemes[m_YGHJSchemeIndex];
-        }
-    }
-    private int m_PLMSchemeIndex = -1;
-    public InputControlScheme PLMScheme
-    {
-        get
-        {
-            if (m_PLMSchemeIndex == -1) m_PLMSchemeIndex = asset.FindControlSchemeIndex("PLM%");
-            return asset.controlSchemes[m_PLMSchemeIndex];
-        }
-    }
-    private int m__5123SchemeIndex = -1;
-    public InputControlScheme _5123Scheme
-    {
-        get
-        {
-            if (m__5123SchemeIndex == -1) m__5123SchemeIndex = asset.FindControlSchemeIndex("5123");
-            return asset.controlSchemes[m__5123SchemeIndex];
-        }
-    }
-    private int m_controllerSchemeIndex = -1;
-    public InputControlScheme controllerScheme
-    {
-        get
-        {
-            if (m_controllerSchemeIndex == -1) m_controllerSchemeIndex = asset.FindControlSchemeIndex("controller");
-            return asset.controlSchemes[m_controllerSchemeIndex];
-        }
+        void OnWalk(InputAction.CallbackContext context);
+        void OnJump(InputAction.CallbackContext context);
+        void OnPickup(InputAction.CallbackContext context);
     }
 }
