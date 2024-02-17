@@ -945,7 +945,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 3644424307494734893}
   mode: 0
-  flexibility: 1
+  flexibility: 0.95
   maxSpeed: 0.2
 --- !u!114 &2031231603
 MonoBehaviour:

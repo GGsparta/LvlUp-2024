@@ -25,7 +25,7 @@ public class Ship : MonoBehaviour
     private Vector3 targetDir;
     private Quaternion targetRot;
 
-    private Vector3 rotation = Vector3.zero;
+    private Quaternion rotation = Quaternion.identity;
     
     [SerializeField]
     private Camera camera;
@@ -79,9 +79,8 @@ public class Ship : MonoBehaviour
                   * Quaternion.AngleAxis(mousePosition.y * (GB_MOVEMENT_COEFF * Time.fixedDeltaTime), rotRight);
       body.rotation = targetRot;
       */
-      rotation += new Vector3(mousePosition.y, mousePosition.x, 0) * (GB_MOVEMENT_COEFF * Time.fixedDeltaTime);
-      //transform.localEulerAngles = rotation;
-      body.MoveRotation(Quaternion.Euler(rotation));
+      rotation *= Quaternion.Euler(new Vector3(mousePosition.y, mousePosition.x, 0) * (GB_MOVEMENT_COEFF * Time.fixedDeltaTime));
+      transform.localRotation = rotation;
       
       //transform.rotation *= Quaternion.AngleAxis(mousePosition.x * (GB_MOVEMENT_COEFF * Time.fixedDeltaTime) , transform.up);
       body.velocity = transform.forward;
