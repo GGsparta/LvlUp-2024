@@ -51,7 +51,7 @@ public class Ship : MonoBehaviour
             wasteList.RemoveAt(0);
             
             waste.SetRotation(transform.rotation);
-            waste.transform.position = transform.position + transform.forward * 4;
+            waste.transform.position = transform.position + transform.forward * 3;
             waste.gameObject.SetActive(true);
             waste.Fire();
         }
