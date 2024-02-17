@@ -11,6 +11,8 @@ public class Waste : MonoBehaviour
     private bool isMoving;
     private float movingDuration;
 
+    public bool IsDestroyedWaste { get; private set; } = false;
+
     private WasteManager manager;
     
     [SerializeField]
@@ -62,6 +64,7 @@ public class Waste : MonoBehaviour
         {
             manager.EmitWasteEvent(TypeOfWaste);
             GameObject.Destroy(gameObject);
+            IsDestroyedWaste = true;
         }
     }
 }

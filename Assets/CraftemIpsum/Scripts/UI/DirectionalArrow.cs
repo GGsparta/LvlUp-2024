@@ -25,6 +25,12 @@ namespace CraftemIpsum.UI
 
         private void Update()
         {
+            if (objectToPoint == null)
+            {
+                graphics.enabled = false;
+                return;
+            }
+            
             // Compute position and bounds depending on the type of display (fullscreen or in-canvas rect)
             Vector3 canvasPosition = targetCamera.WorldToScreenPoint(objectToPoint.position);
             Vector2 minPoint = _display.min;
