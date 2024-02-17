@@ -162,10 +162,40 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3349552502246433367, guid: 7e8b280f26c91054cad28582322a4261,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4332077832010132371, guid: 7e8b280f26c91054cad28582322a4261,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.5533275
+      objectReference: {fileID: 0}
+    - target: {fileID: 4332077832010132371, guid: 7e8b280f26c91054cad28582322a4261,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.44025972
+      objectReference: {fileID: 0}
+    - target: {fileID: 4332077832010132371, guid: 7e8b280f26c91054cad28582322a4261,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.55332756
+      objectReference: {fileID: 0}
+    - target: {fileID: 4332077832010132371, guid: 7e8b280f26c91054cad28582322a4261,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.44025978
+      objectReference: {fileID: 0}
     - target: {fileID: 5054872530524080236, guid: 7e8b280f26c91054cad28582322a4261,
         type: 3}
       propertyPath: m_Name
       value: Gameplay 2D
+      objectReference: {fileID: 0}
+    - target: {fileID: 7737650977596849972, guid: 7e8b280f26c91054cad28582322a4261,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7794796062017312693, guid: 7e8b280f26c91054cad28582322a4261,
         type: 3}
