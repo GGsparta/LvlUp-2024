@@ -9,6 +9,7 @@ namespace CraftemIpsum._2D
     public class Player : MonoBehaviour
     {
         [SerializeField] private float speed = 2f;
+        [SerializeField] private float inAirMovingAbility = 0.75f;
         [SerializeField] private float jumpForce = 3f;
         [SerializeField] private float maxSpeed = 5f;
         [SerializeField] private float groundedDamping = 0;
@@ -85,15 +86,18 @@ namespace CraftemIpsum._2D
 
         private void DoWalk()
         {
-
-            if (!_grounded)
-                return;
-
             float input = _walk.ReadValue<float>();
-            float currentSpeed = speed;
 
-            _rigidbody.AddForce(transform.right * (input * currentSpeed), ForceMode2D.Impulse);
-            _rigidbody.velocity = _rigidbody.velocity.normalized * (Mathf.Min(_rigidbody.velocity.magnitude, maxSpeed) * (1 - groundedDamping));
+            if (_grounded)
+            {
+                _rigidbody.AddForce(transform.right * (input * speed), ForceMode2D.Impulse);
+                _rigidbody.velocity = _rigidbody.velocity.normalized * (Mathf.Min(_rigidbody.velocity.magnitude, maxSpeed) * (1 - groundedDamping));
+            }
+            else
+            {
+                _rigidbody.AddForce(transform.right * (input * inAirMovingAbility), ForceMode2D.Force);
+                _rigidbody.velocity = _rigidbody.velocity.normalized * Mathf.Min(_rigidbody.velocity.magnitude, maxSpeed);
+            }
         }
 
         private void UpdateGraphics()
