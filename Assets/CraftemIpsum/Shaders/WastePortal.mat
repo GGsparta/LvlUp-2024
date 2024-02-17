@@ -129,7 +129,7 @@ Material:
     - _SpecularHighlights: 1
     - _Speed: 0.5
     - _SpiralSpeed: 5
-    - _SpiralStrength: 28
+    - _SpiralStrength: 20
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
     - _Surface: 0
