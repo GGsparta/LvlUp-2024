@@ -558,7 +558,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3051927797167242504}
   - component: {fileID: 3140018768174300108}
-  - component: {fileID: 2175823764781980060}
   - component: {fileID: 1601323379986864881}
   - component: {fileID: 5492401320286339012}
   - component: {fileID: 4986557460667639634}
@@ -636,14 +635,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!81 &2175823764781980060
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4846395043427311543}
-  m_Enabled: 1
 --- !u!114 &1601323379986864881
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -750,6 +741,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1062145497391792796}
+  - component: {fileID: 7273521800118556893}
   m_Layer: 0
   m_Name: Waste
   m_TagString: Untagged
@@ -776,6 +768,21 @@ Transform:
   - {fileID: 2984111346427067532}
   m_Father: {fileID: 2653107991052056266}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7273521800118556893
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6193576409080091462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9238ab4f6464824abcae4cf092dfe59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  wasteInPortal:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &6440503067606266604
 GameObject:
   m_ObjectHideFlags: 0
