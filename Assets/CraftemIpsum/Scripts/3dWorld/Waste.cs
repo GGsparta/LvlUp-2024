@@ -1,6 +1,5 @@
-using System;
+using CraftemIpsum;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class Waste : MonoBehaviour
 {
@@ -18,7 +17,6 @@ public class Waste : MonoBehaviour
     [SerializeField]
     private WasteType wasteType;
     
-    public WasteType TypeOfWaste => wasteType;
 
     private void Start()
     {
@@ -62,7 +60,11 @@ public class Waste : MonoBehaviour
     {
         if (other.name.Contains("WastePortal"))
         {
-            manager.EmitWasteEvent(TypeOfWaste);
+            manager.EmitWasteEvent(new WasteData
+            {
+                type = wasteType,
+                portalColor = default // TODO pour des portails de différentes couleur, tu peux setter ici
+            });
             GameObject.Destroy(gameObject);
             IsDestroyedWaste = true;
         }

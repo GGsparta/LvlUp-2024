@@ -6,6 +6,7 @@ namespace CraftemIpsum._2D
     public class Portal : MonoBehaviour
     {
         [SerializeField] private Waste[] wastePrefabs;
+        public PortalColor color;
 
         public void SpawnWaste(WasteType type)
         {

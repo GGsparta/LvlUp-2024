@@ -1,14 +1,12 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
+using CraftemIpsum;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class WasteManager : MonoBehaviour
 {
-    public UnityEvent<WasteType> wasteInPortal = new();
+    public UnityEvent<WasteData> wasteInPortal = new();
 
     private List<Waste> listOfWaste;
     
@@ -23,9 +21,9 @@ public class WasteManager : MonoBehaviour
         // TODO Create waste randomnly
     }
 
-    public void EmitWasteEvent(WasteType type)
+    public void EmitWasteEvent(WasteData waste)
     {
-        wasteInPortal.Invoke(type);
+        wasteInPortal.Invoke(waste);
     }
 
     public List<Waste> getNearWaste(Vector3 position, int number)
