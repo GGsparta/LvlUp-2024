@@ -15,13 +15,15 @@ namespace CraftemIpsum._2D
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if(other.TryGetComponent(out Rigidbody2D body))
+            Rigidbody2D body = other.GetComponentInParent<Rigidbody2D>();
+            if(body) 
                 _listOfAttractedBodies.Add(body);
         }
 
         private void OnTriggerExit2D(Collider2D other)
         {
-            if(other.TryGetComponent(out Rigidbody2D body))
+            Rigidbody2D body = other.GetComponentInParent<Rigidbody2D>();
+            if(body) 
                 _listOfAttractedBodies.Remove(body);
         }
 

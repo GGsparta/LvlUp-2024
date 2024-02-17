@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using GGL.Extensions;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -20,6 +21,7 @@ namespace CraftemIpsum._2D
 
         private InputAction _walk, _jump, _pickUp;
         private Rigidbody2D _rigidbody;
+        private List<GameObject> _wastesAround = new();
         private bool _grounded;
         private Waste _current;
 
@@ -27,12 +29,20 @@ namespace CraftemIpsum._2D
         private void OnTriggerEnter2D(Collider2D other)
         {
             if (other.CompareTag("Ground")) _grounded = true;
-            if (other.CompareTag("Waste")) DoPickUp(other.gameObject);
+            else if (other.CompareTag("Waste"))
+            {
+                DoPickUp(other.gameObject);
+                _wastesAround.Add(other.gameObject);
+            }
         }
 
         private void OnTriggerExit2D(Collider2D other)
         {
             if (other.CompareTag("Ground")) _grounded = false;
+            else if (other.CompareTag("Waste"))
+            {
+                _wastesAround.Remove(other.gameObject);
+            }
         }
 
         private void Awake()
@@ -45,6 +55,7 @@ namespace CraftemIpsum._2D
             _grounded = true;
 
             _jump.performed += DoJump;
+            _pickUp.performed += DoCast;
         }
 
         private void OnEnable()
@@ -69,10 +80,40 @@ namespace CraftemIpsum._2D
 
         private void DoPickUp(GameObject go)
         {
-            if(_current) return;
+            if (_current) return;
+            _current = go.GetComponentInParent<Waste>();
 
-            // todo
+            _current.GetComponent<Rigidbody2D>().simulated = false;
+            _current.transform.SetParent(transform);
+            _current.transform.localScale = Vector3.one;
+            _current.transform.position = transportSpot.position;
+            _current.transform.rotation = transportSpot.rotation;
         }
+
+        private void DoCast(InputAction.CallbackContext obj)
+        {
+            if (!_current)
+            {
+                DoPickUp(_wastesAround[UnityEngine.Random.Range(0, _wastesAround.Count)]);
+                return;
+            }
+
+            if (IsInvoking(nameof(ReleaseObject)))
+            {
+                CancelInvoke(nameof(ReleaseObject));
+                ReleaseObject();
+                return;
+            }
+
+            var r = _current.GetComponent<Rigidbody2D>();
+            r.velocity = _rigidbody.velocity;
+            r.simulated = true;
+            _current.transform.SetParent(null);
+
+            Invoke(nameof(ReleaseObject), .5f);
+        }
+
+        private void ReleaseObject() => _current = null;
 
         private void DoJump(InputAction.CallbackContext callbackContext)
         {
@@ -86,6 +127,7 @@ namespace CraftemIpsum._2D
         private void DoWalk()
         {
             float input = _walk.ReadValue<float>();
+            transform.up = transform.position.normalized;
 
             if (_grounded)
             {
@@ -101,7 +143,6 @@ namespace CraftemIpsum._2D
 
         private void UpdateGraphics()
         {
-            transform.up = transform.position.normalized;
         }
     }
 }
