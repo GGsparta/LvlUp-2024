@@ -17,6 +17,7 @@ namespace CraftemIpsum._2D
         [SerializeField] private float groundedDamping = 0;
         [Header("Content")]
         [SerializeField] private Transform transportSpot;
+        [SerializeField] private Animator animator;
 
 
         private InputAction _walk, _jump, _pickUp;
@@ -25,10 +26,14 @@ namespace CraftemIpsum._2D
         private bool _grounded;
         private Waste _current;
 
+        private static readonly int Grounded = Animator.StringToHash("Grounded");
+        private static readonly int Moving = Animator.StringToHash("Moving");
+        private float _input;
+
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (other.CompareTag("Ground")) _grounded = true;
+            if (other.CompareTag("Ground")) animator.SetBool(Grounded, _grounded = true);
             else if (other.CompareTag("Waste"))
             {
                 DoPickUp(other.gameObject);
@@ -38,7 +43,7 @@ namespace CraftemIpsum._2D
 
         private void OnTriggerExit2D(Collider2D other)
         {
-            if (other.CompareTag("Ground")) _grounded = false;
+            if (other.CompareTag("Ground")) animator.SetBool(Grounded, _grounded = false);
             else if (other.CompareTag("Waste"))
             {
                 _wastesAround.Remove(other.gameObject);
@@ -82,6 +87,7 @@ namespace CraftemIpsum._2D
         {
             if (_current) return;
             _current = go.GetComponentInParent<Waste>();
+            go.GetComponent<SpriteRenderer>().sortingOrder = 0;
 
             _current.GetComponent<Rigidbody2D>().simulated = false;
             _current.transform.SetParent(transform);
@@ -109,6 +115,7 @@ namespace CraftemIpsum._2D
             r.velocity = _rigidbody.velocity;
             r.simulated = true;
             _current.transform.SetParent(null);
+            _current.GetComponentInChildren<SpriteRenderer>().sortingOrder = 2;
 
             Invoke(nameof(ReleaseObject), .5f);
         }
@@ -126,23 +133,26 @@ namespace CraftemIpsum._2D
 
         private void DoWalk()
         {
-            float input = _walk.ReadValue<float>();
+            _input = _walk.ReadValue<float>();
             transform.up = transform.position.normalized;
 
             if (_grounded)
             {
-                _rigidbody.AddForce(transform.right * (input * speed), ForceMode2D.Impulse);
+                _rigidbody.AddForce(transform.right * (_input * speed), ForceMode2D.Impulse);
                 _rigidbody.velocity = _rigidbody.velocity.normalized * (Mathf.Min(_rigidbody.velocity.magnitude, maxSpeed) * (1 - groundedDamping));
             }
             else
             {
-                _rigidbody.AddForce(transform.right * (input * inAirMovingAbility), ForceMode2D.Force);
+                _rigidbody.AddForce(transform.right * (_input * inAirMovingAbility), ForceMode2D.Force);
                 _rigidbody.velocity = _rigidbody.velocity.normalized * Mathf.Min(_rigidbody.velocity.magnitude, maxSpeed);
             }
         }
 
         private void UpdateGraphics()
         {
+            animator.SetBool(Moving, _rigidbody.velocity.magnitude > .5f);
+            if(_input != 0f)
+                transform.localScale = new Vector3(_input < 0 ? -1 : 1, 1, 1);
         }
     }
 }
