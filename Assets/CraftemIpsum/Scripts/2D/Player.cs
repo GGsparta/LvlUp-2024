@@ -8,23 +8,26 @@ namespace CraftemIpsum._2D
 {
     public class Player : MonoBehaviour
     {
+        [Header("Parameters")]
         [SerializeField] private float speed = 2f;
         [SerializeField] private float inAirMovingAbility = 0.75f;
         [SerializeField] private float jumpForce = 3f;
         [SerializeField] private float maxSpeed = 5f;
         [SerializeField] private float groundedDamping = 0;
+        [Header("Content")]
+        [SerializeField] private Transform transportSpot;
 
 
         private InputAction _walk, _jump, _pickUp;
         private Rigidbody2D _rigidbody;
         private bool _grounded;
-        
-        public bool CanMove => true;
+        private Waste _current;
 
 
         private void OnTriggerEnter2D(Collider2D other)
         {
             if (other.CompareTag("Ground")) _grounded = true;
+            if (other.CompareTag("Waste")) DoPickUp(other.gameObject);
         }
 
         private void OnTriggerExit2D(Collider2D other)
@@ -60,18 +63,14 @@ namespace CraftemIpsum._2D
 
         public void Update()
         {
-            if (CanMove)
-            {
-                DoWalk();
-                //DoJump();
-                DoPickUp();
-            }
-
+            DoWalk();
             UpdateGraphics();
         }
 
-        private void DoPickUp()
+        private void DoPickUp(GameObject go)
         {
+            if(_current) return;
+
             // todo
         }
 
