@@ -195,7 +195,7 @@ PrefabInstance:
     - target: {fileID: 5492401320286339012, guid: 437bd52a029db3645849886487bc5fa8,
         type: 3}
       propertyPath: flexibility
-      value: 0.25
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 8047062691408000686, guid: 437bd52a029db3645849886487bc5fa8,
         type: 3}
