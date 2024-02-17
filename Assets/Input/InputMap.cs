@@ -46,7 +46,7 @@ public partial class @InputMap: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Pick up"",
+                    ""name"": ""PickUp"",
                     ""type"": ""Button"",
                     ""id"": ""f986afb2-399c-4f45-8dc5-45e7644a0ea2"",
                     ""expectedControlType"": ""Button"",
@@ -90,13 +90,46 @@ public partial class @InputMap: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""6bab0df5-0652-474c-8a71-eeb0a1b656f5"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Walk"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""7164e998-cd5e-4bc9-8fdc-b2f66bbcc16e"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Walk"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""b217351d-7bd9-4ce9-97a8-b855184adf46"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Walk"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
                     ""name"": """",
                     ""id"": ""ee8ae686-9846-4611-a140-61995602fa8c"",
                     ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Pick up"",
+                    ""action"": ""PickUp"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -120,7 +153,7 @@ public partial class @InputMap: IInputActionCollection2, IDisposable
         m_Gameplay2D = asset.FindActionMap("Gameplay 2D", throwIfNotFound: true);
         m_Gameplay2D_Walk = m_Gameplay2D.FindAction("Walk", throwIfNotFound: true);
         m_Gameplay2D_Jump = m_Gameplay2D.FindAction("Jump", throwIfNotFound: true);
-        m_Gameplay2D_Pickup = m_Gameplay2D.FindAction("Pick up", throwIfNotFound: true);
+        m_Gameplay2D_PickUp = m_Gameplay2D.FindAction("PickUp", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -184,14 +217,14 @@ public partial class @InputMap: IInputActionCollection2, IDisposable
     private List<IGameplay2DActions> m_Gameplay2DActionsCallbackInterfaces = new List<IGameplay2DActions>();
     private readonly InputAction m_Gameplay2D_Walk;
     private readonly InputAction m_Gameplay2D_Jump;
-    private readonly InputAction m_Gameplay2D_Pickup;
+    private readonly InputAction m_Gameplay2D_PickUp;
     public struct Gameplay2DActions
     {
         private @InputMap m_Wrapper;
         public Gameplay2DActions(@InputMap wrapper) { m_Wrapper = wrapper; }
         public InputAction @Walk => m_Wrapper.m_Gameplay2D_Walk;
         public InputAction @Jump => m_Wrapper.m_Gameplay2D_Jump;
-        public InputAction @Pickup => m_Wrapper.m_Gameplay2D_Pickup;
+        public InputAction @PickUp => m_Wrapper.m_Gameplay2D_PickUp;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay2D; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -207,9 +240,9 @@ public partial class @InputMap: IInputActionCollection2, IDisposable
             @Jump.started += instance.OnJump;
             @Jump.performed += instance.OnJump;
             @Jump.canceled += instance.OnJump;
-            @Pickup.started += instance.OnPickup;
-            @Pickup.performed += instance.OnPickup;
-            @Pickup.canceled += instance.OnPickup;
+            @PickUp.started += instance.OnPickUp;
+            @PickUp.performed += instance.OnPickUp;
+            @PickUp.canceled += instance.OnPickUp;
         }
 
         private void UnregisterCallbacks(IGameplay2DActions instance)
@@ -220,9 +253,9 @@ public partial class @InputMap: IInputActionCollection2, IDisposable
             @Jump.started -= instance.OnJump;
             @Jump.performed -= instance.OnJump;
             @Jump.canceled -= instance.OnJump;
-            @Pickup.started -= instance.OnPickup;
-            @Pickup.performed -= instance.OnPickup;
-            @Pickup.canceled -= instance.OnPickup;
+            @PickUp.started -= instance.OnPickUp;
+            @PickUp.performed -= instance.OnPickUp;
+            @PickUp.canceled -= instance.OnPickUp;
         }
 
         public void RemoveCallbacks(IGameplay2DActions instance)
@@ -244,6 +277,6 @@ public partial class @InputMap: IInputActionCollection2, IDisposable
     {
         void OnWalk(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
-        void OnPickup(InputAction.CallbackContext context);
+        void OnPickUp(InputAction.CallbackContext context);
     }
 }

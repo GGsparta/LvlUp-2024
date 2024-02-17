@@ -24,7 +24,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Pick up",
+                    "name": "PickUp",
                     "type": "Button",
                     "id": "f986afb2-399c-4f45-8dc5-45e7644a0ea2",
                     "expectedControlType": "Button",
@@ -68,13 +68,46 @@
                     "isPartOfComposite": true
                 },
                 {
+                    "name": "1D Axis",
+                    "id": "6bab0df5-0652-474c-8a71-eeb0a1b656f5",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Walk",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "7164e998-cd5e-4bc9-8fdc-b2f66bbcc16e",
+                    "path": "<Keyboard>/leftArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Walk",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "b217351d-7bd9-4ce9-97a8-b855184adf46",
+                    "path": "<Keyboard>/rightArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Walk",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
                     "name": "",
                     "id": "ee8ae686-9846-4611-a140-61995602fa8c",
                     "path": "<Keyboard>/e",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Pick up",
+                    "action": "PickUp",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
