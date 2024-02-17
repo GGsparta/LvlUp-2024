@@ -145,6 +145,34 @@ public partial class @InputMap: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Gameplay 3D"",
+            ""id"": ""8f9fe274-7e0e-4f6c-92df-578967b63274"",
+            ""actions"": [
+                {
+                    ""name"": ""Shoot"",
+                    ""type"": ""Button"",
+                    ""id"": ""fcc0df7a-7fb4-493c-8b1b-b5b94deb4943"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""7a765896-6385-41a9-9dae-b24485f00f75"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Shoot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -154,6 +182,9 @@ public partial class @InputMap: IInputActionCollection2, IDisposable
         m_Gameplay2D_Walk = m_Gameplay2D.FindAction("Walk", throwIfNotFound: true);
         m_Gameplay2D_Jump = m_Gameplay2D.FindAction("Jump", throwIfNotFound: true);
         m_Gameplay2D_PickUp = m_Gameplay2D.FindAction("PickUp", throwIfNotFound: true);
+        // Gameplay 3D
+        m_Gameplay3D = asset.FindActionMap("Gameplay 3D", throwIfNotFound: true);
+        m_Gameplay3D_Shoot = m_Gameplay3D.FindAction("Shoot", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -273,10 +304,60 @@ public partial class @InputMap: IInputActionCollection2, IDisposable
         }
     }
     public Gameplay2DActions @Gameplay2D => new Gameplay2DActions(this);
+
+    // Gameplay 3D
+    private readonly InputActionMap m_Gameplay3D;
+    private List<IGameplay3DActions> m_Gameplay3DActionsCallbackInterfaces = new List<IGameplay3DActions>();
+    private readonly InputAction m_Gameplay3D_Shoot;
+    public struct Gameplay3DActions
+    {
+        private @InputMap m_Wrapper;
+        public Gameplay3DActions(@InputMap wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Shoot => m_Wrapper.m_Gameplay3D_Shoot;
+        public InputActionMap Get() { return m_Wrapper.m_Gameplay3D; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(Gameplay3DActions set) { return set.Get(); }
+        public void AddCallbacks(IGameplay3DActions instance)
+        {
+            if (instance == null || m_Wrapper.m_Gameplay3DActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_Gameplay3DActionsCallbackInterfaces.Add(instance);
+            @Shoot.started += instance.OnShoot;
+            @Shoot.performed += instance.OnShoot;
+            @Shoot.canceled += instance.OnShoot;
+        }
+
+        private void UnregisterCallbacks(IGameplay3DActions instance)
+        {
+            @Shoot.started -= instance.OnShoot;
+            @Shoot.performed -= instance.OnShoot;
+            @Shoot.canceled -= instance.OnShoot;
+        }
+
+        public void RemoveCallbacks(IGameplay3DActions instance)
+        {
+            if (m_Wrapper.m_Gameplay3DActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IGameplay3DActions instance)
+        {
+            foreach (var item in m_Wrapper.m_Gameplay3DActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_Gameplay3DActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public Gameplay3DActions @Gameplay3D => new Gameplay3DActions(this);
     public interface IGameplay2DActions
     {
         void OnWalk(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnPickUp(InputAction.CallbackContext context);
+    }
+    public interface IGameplay3DActions
+    {
+        void OnShoot(InputAction.CallbackContext context);
     }
 }

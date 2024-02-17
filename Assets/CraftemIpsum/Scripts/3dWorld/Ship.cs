@@ -24,12 +24,15 @@ public class Ship : MonoBehaviour
     
     [SerializeField]
     private Camera camera;
+
+    private List<Waste> wasteList;
     
 
     
     
     private void Start()
     {
+        wasteList = new List<Waste>();
         body = GetComponent<Rigidbody>();
         rotation = transform.eulerAngles;
         body.velocity = transform.forward * VELOCITY;
@@ -63,5 +66,16 @@ public class Ship : MonoBehaviour
 
       body.velocity = transform.forward * VELOCITY;
 
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Waste waste = other.GetComponent<Waste>();
+        if (waste != null)
+        {
+            wasteList.Add(waste);
+            //waste.enabled = false;
+            waste.gameObject.SetActive(false);
+        }
     }
 }
