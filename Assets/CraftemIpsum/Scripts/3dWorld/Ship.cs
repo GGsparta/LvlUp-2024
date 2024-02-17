@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using GGL.Extensions;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Ship : MonoBehaviour
 {
@@ -26,6 +27,7 @@ public class Ship : MonoBehaviour
     private Camera camera;
 
     private List<Waste> wasteList;
+    private PlayerInput input;
     
 
     
@@ -36,7 +38,25 @@ public class Ship : MonoBehaviour
         body = GetComponent<Rigidbody>();
         rotation = transform.eulerAngles;
         body.velocity = transform.forward * VELOCITY;
+        
+        input = GetComponent<PlayerInput>();
+        input.actions["Shoot"].performed += DoShoot;
     }
+
+    private void DoShoot(InputAction.CallbackContext obj)
+    {
+        if (wasteList.Count > 0)
+        {
+            Waste waste = wasteList[0];
+            wasteList.RemoveAt(0);
+            
+            waste.SetRotation(transform.rotation);
+            waste.transform.position = transform.position + transform.forward * 4;
+            waste.gameObject.SetActive(true);
+            waste.Fire();
+        }
+    }
+
     private void Update()
     {
         // [0, 1]
@@ -77,5 +97,15 @@ public class Ship : MonoBehaviour
             //waste.enabled = false;
             waste.gameObject.SetActive(false);
         }
+    }
+    
+    private void OnEnable()
+    {
+        if(input != null) input.actions["Shoot"].Enable();
+    }
+
+    private void OnDisable()
+    {
+        if(input != null) input.actions["Shoot"].Disable();
     }
 }
