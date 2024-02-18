@@ -58,7 +58,7 @@ public class Ship : MonoBehaviour
             }
             waste.SetRotation(rotation);
 
-            float xDecalage = 3;
+            float xDecalage = 5;
             if (waste.Type == WasteType.EXHAUST) xDecalage = 4;
             if (waste.Type == WasteType.SUSPENSION) xDecalage = 4;
             
