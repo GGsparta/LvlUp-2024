@@ -20,12 +20,16 @@ public class Waste : MonoBehaviour
 
     private Rigidbody wasteBody;
     
-    public WasteType Type { get; }
+    public WasteType Type
+    {
+        get { return wasteType; }
+    }
     
 
     private void Start()
     {
-        initRotation = Quaternion.Euler(wasteType == WasteType.SUSPENSION ? -90 : 0, 0, 0);
+        //initRotation = Quaternion.Euler(wasteType == WasteType.SUSPENSION ? -90 : 0, 0, 0);
+        initRotation = Quaternion.Euler(0, 0, 0);
         isMoving = false;
         manager = gameObject.GetComponentInParent<WasteManager>();
         wasteBody = GetComponent<Rigidbody>();

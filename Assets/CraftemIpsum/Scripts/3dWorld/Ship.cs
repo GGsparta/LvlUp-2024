@@ -60,6 +60,7 @@ public class Ship : MonoBehaviour
 
             float xDecalage = 3;
             if (waste.Type == WasteType.EXHAUST) xDecalage = 4;
+            if (waste.Type == WasteType.SUSPENSION) xDecalage = 4;
             
             waste.transform.position = transform.position + transform.forward * xDecalage;
             waste.gameObject.SetActive(true);
