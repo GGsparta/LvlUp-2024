@@ -10,21 +10,38 @@ public class WasteManager : MonoBehaviour
     [SerializeField] private GameObject suspensionPrefab;
     [SerializeField] private GameObject barrelPrefab;
     
+    private const int NUMBER_OF_INIT_WASTE = 12;
+    private const int TIME_BEFORE_NEW_WASTE = 5;
+    
     public UnityEvent<WasteData> wasteInPortal = new();
 
     private List<Waste> listOfWaste;
 
     [SerializeField] private Limits limits;
+   
+    private float elaspedTime;
     
     // Start is called before the first frame update
     void Start()
     {
         listOfWaste = GetComponentsInChildren<Waste>().ToList();
+
+        CreateWaste(NUMBER_OF_INIT_WASTE);
+
+        elaspedTime = 0;
     }
 
     private void Update()
     {
         // TODO Create waste randomnly
+
+        if (elaspedTime >= TIME_BEFORE_NEW_WASTE)
+        {
+            elaspedTime = 0;
+            CreateWaste(1);
+        }
+        
+        elaspedTime += Time.deltaTime;
     }
 
     public void EmitWasteEvent(WasteData waste)
@@ -45,7 +62,7 @@ public class WasteManager : MonoBehaviour
         var worldLimits = limits.GetWorldSize();
         for (int i = 0; i < number; i++)
         {
-            int prefabId = Random.Range(0, 2);
+            int prefabId = Random.Range(0, 3);
             GameObject prefab;
             if (prefabId == 0) prefab = exhaustPrefab;
             else if (prefabId == 1) prefab = suspensionPrefab;
@@ -55,7 +72,10 @@ public class WasteManager : MonoBehaviour
             float y = Random.Range(worldLimits.Item3, worldLimits.Item4);
             float z = Random.Range(worldLimits.Item5, worldLimits.Item6);
             
-            Instantiate(prefab, new Vector3(x, y, z), prefab.transform.rotation);
+            //GameObject newObject = Instantiate(prefab, new Vector3(x, y, z), prefab.transform.rotation, transform);
+            GameObject newObject = Instantiate(prefab, new Vector3(x, y, z), Random.rotation, transform);
+            
+            listOfWaste.Add(newObject.GetComponent<Waste>());
         }
         
     }
