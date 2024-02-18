@@ -12,6 +12,7 @@ namespace CraftemIpsum.UI
     
         [Header("Controls")]
         public Camera targetCamera;
+        public float cameraViewportOffset;
         public Transform objectToPoint;
 
         private Rect _display;
@@ -19,7 +20,7 @@ namespace CraftemIpsum.UI
         private void Start()
         {
             if (!targetCamera) targetCamera = Camera.main;
-            _display = new Rect(0, 0, targetCamera.pixelWidth, targetCamera.pixelHeight); // todo check if should use targetCamera.scaledPixelWidth/Height instead
+            _display = new Rect(targetCamera.pixelWidth * cameraViewportOffset, 0, targetCamera.pixelWidth, targetCamera.pixelHeight);
         }
 
 
