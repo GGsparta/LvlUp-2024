@@ -60,10 +60,16 @@ public class Waste : MonoBehaviour
     {
         if (other.name.Contains("WastePortal"))
         {
+            // pas beau mais fonctionnel
+            PortalColor color;
+            if (other.name.Contains("Red")) color = PortalColor.RED;
+            else if (other.name.Contains("Blue")) color = PortalColor.BLUE;
+            else color = PortalColor.GREEN;
+            
             manager.EmitWasteEvent(new WasteData
             {
                 type = wasteType,
-                portalColor = default // TODO pour des portails de différentes couleur, tu peux setter ici
+                portalColor = color
             });
             GameObject.Destroy(gameObject);
             IsDestroyedWaste = true;

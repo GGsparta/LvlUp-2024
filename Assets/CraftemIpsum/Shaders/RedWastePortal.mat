@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: WastePortal
+  m_Name: RedWastePortal
   m_Shader: {fileID: -6465566751694194690, guid: 58db91425344daf41b42cd61d47998ba,
     type: 3}
   m_Parent: {fileID: 0}
