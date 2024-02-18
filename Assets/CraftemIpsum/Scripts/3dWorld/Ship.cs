@@ -45,8 +45,11 @@ public class Ship : MonoBehaviour
 
     private void DoShoot(InputAction.CallbackContext obj)
     {
+        Debug.Log(wasteList.Count);
         if (wasteList.Count > 0)
         {
+            Debug.Log("Shoot");
+            
             Waste waste = wasteList[0];
             wasteList.RemoveAt(0);
             

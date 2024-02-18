@@ -1,3 +1,4 @@
+using System;
 using CraftemIpsum;
 using UnityEngine;
 
@@ -16,6 +17,8 @@ public class Waste : MonoBehaviour
     
     [SerializeField]
     private WasteType wasteType;
+
+    private Rigidbody wasteBody;
     
 
     private void Start()
@@ -23,6 +26,7 @@ public class Waste : MonoBehaviour
         initRotation = Quaternion.Euler(wasteType == WasteType.SUSPENSION ? -90 : 0, 0, 0);
         isMoving = false;
         manager = gameObject.GetComponentInParent<WasteManager>();
+        wasteBody = GetComponent<Rigidbody>();
     }
 
     public void SetRotation(Quaternion q)
@@ -43,8 +47,17 @@ public class Waste : MonoBehaviour
             {
                 var coeff = movingDuration / MOVING_DURATION;
 
-                transform.position += transform.forward * (Time.deltaTime * MOVING_MAX_SPEED *
-                                      Mathf.Cos(coeff * Mathf.PI / 2));
+                /*if (wasteBody == null) 
+                {*/
+                    transform.position += transform.forward * (Time.deltaTime * MOVING_MAX_SPEED *
+                                                               Mathf.Cos(coeff * Mathf.PI / 2));
+                /*}
+                else
+                {
+                    wasteBody.velocity = transform.forward * (Time.deltaTime * MOVING_MAX_SPEED *
+                        Mathf.Cos(coeff * Mathf.PI / 2));
+                }*/
+
                 movingDuration += Time.deltaTime;
             }
         }
@@ -52,6 +65,11 @@ public class Waste : MonoBehaviour
 
     public void Fire()
     {
+        if (wasteBody != null)
+        {
+            wasteBody.velocity = Vector3.zero;
+            wasteBody.angularVelocity = Vector3.zero;
+        }
         isMoving = true;
         movingDuration = 0;
     }
@@ -73,6 +91,21 @@ public class Waste : MonoBehaviour
             });
             GameObject.Destroy(gameObject);
             IsDestroyedWaste = true;
+        }
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.name.Contains("Wall"))
+        {
+            //isMoving = false;
+            transform.rotation *= Quaternion.Euler(0, 180, 0);
+
+            if (wasteBody != null)
+            {
+                wasteBody.velocity = Vector3.zero;
+                wasteBody.angularVelocity = Vector3.zero;
+            }
         }
     }
 }
