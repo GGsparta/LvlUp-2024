@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Decompte : MonoBehaviour
 {
+    [SerializeField] private GameObject bg;
     [SerializeField] private TextMeshProUGUI display;
 
     private int _compte;
@@ -19,6 +20,8 @@ public class Decompte : MonoBehaviour
         if (_compte == 0)
         {
             GetComponent<Popup>().Close();
+            Destroy(gameObject);
+            Destroy(bg);
             return;
         }
 
