@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using CraftemIpsum;
 using GGL.Extensions;
 using UnityEditor;
 using UnityEngine;
@@ -45,16 +46,22 @@ public class Ship : MonoBehaviour
 
     private void DoShoot(InputAction.CallbackContext obj)
     {
-        Debug.Log(wasteList.Count);
         if (wasteList.Count > 0)
         {
-            Debug.Log("Shoot");
-            
             Waste waste = wasteList[0];
             wasteList.RemoveAt(0);
+
+            Quaternion rotation = transform.rotation;
+            if (waste.Type == WasteType.EXHAUST)
+            {
+                rotation *= Quaternion.Euler(0 ,0, 90);
+            }
+            waste.SetRotation(rotation);
+
+            float xDecalage = 3;
+            if (waste.Type == WasteType.EXHAUST) xDecalage = 4;
             
-            waste.SetRotation(transform.rotation);
-            waste.transform.position = transform.position + transform.forward * 3;
+            waste.transform.position = transform.position + transform.forward * xDecalage;
             waste.gameObject.SetActive(true);
             waste.Fire();
         }

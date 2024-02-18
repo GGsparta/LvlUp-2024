@@ -20,6 +20,8 @@ public class Waste : MonoBehaviour
 
     private Rigidbody wasteBody;
     
+    public WasteType Type { get; }
+    
 
     private void Start()
     {
