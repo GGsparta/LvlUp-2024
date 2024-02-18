@@ -6,6 +6,8 @@ namespace CraftemIpsum._2D
 {
     public class MachineTri : MonoBehaviour
     {
+        [SerializeField] private AudioSource depotSound;
+        
         [SerializeField] private WasteType wasteType;
         [SerializeField] private Transform wasteSpot;
         [SerializeField] private float wasteSpotRadius;
@@ -28,7 +30,8 @@ namespace CraftemIpsum._2D
             go.transform.SetParent(transform);
             go.transform.position = wasteSpot.position + (Vector3)Random.insideUnitCircle * wasteSpotRadius;
             go.GetComponentInChildren<SpriteRenderer>().material.color = new Color(1, 1, 1, 0.2f);
-
+            depotSound.Play();
+            
             OnRecycled?.Invoke(wasteType);
         }
     }

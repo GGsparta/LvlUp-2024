@@ -9,6 +9,7 @@ namespace CraftemIpsum._2D
 {
     public class Player : MonoBehaviour
     {
+        
         [Header("Parameters")]
         [SerializeField] private float speed = 2f;
         [SerializeField] private float inAirMovingAbility = 0.75f;
@@ -18,6 +19,9 @@ namespace CraftemIpsum._2D
         [Header("Content")]
         [SerializeField] private Transform transportSpot;
         [SerializeField] private Animator animator;
+        [Header("Sounds")]
+        [SerializeField] private AudioSource jumpSound;
+        [SerializeField] private AudioSource collectSound;
 
 
         private InputAction _walk, _jump, _pickUp;
@@ -99,6 +103,7 @@ namespace CraftemIpsum._2D
             _current.transform.localScale = Vector3.one;
             _current.transform.position = transportSpot.position;
             _current.transform.rotation = transportSpot.rotation;
+            collectSound.Play();
         }
 
         private void DoCast(InputAction.CallbackContext obj)
@@ -142,6 +147,7 @@ namespace CraftemIpsum._2D
 
             _rigidbody.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
             _grounded = false;
+            jumpSound.Play();
         }
 
         private void DoWalk()
