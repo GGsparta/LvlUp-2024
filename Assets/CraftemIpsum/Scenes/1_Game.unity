@@ -132,25 +132,45 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 329385893095640167, guid: 7e8b280f26c91054cad28582322a4261,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.09000003
+      objectReference: {fileID: 0}
+    - target: {fileID: 1371800306676283636, guid: 7e8b280f26c91054cad28582322a4261,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.5949198
+      objectReference: {fileID: 0}
+    - target: {fileID: 1371800306676283636, guid: 7e8b280f26c91054cad28582322a4261,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.8037851
+      objectReference: {fileID: 0}
     - target: {fileID: 4332077832010132371, guid: 7e8b280f26c91054cad28582322a4261,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.5533275
+      value: 0.99426156
       objectReference: {fileID: 0}
     - target: {fileID: 4332077832010132371, guid: 7e8b280f26c91054cad28582322a4261,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.44025972
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 4332077832010132371, guid: 7e8b280f26c91054cad28582322a4261,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.55332756
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 4332077832010132371, guid: 7e8b280f26c91054cad28582322a4261,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.44025978
+      value: 0.10697666
+      objectReference: {fileID: 0}
+    - target: {fileID: 4924818154321446213, guid: 7e8b280f26c91054cad28582322a4261,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.09000003
       objectReference: {fileID: 0}
     - target: {fileID: 5054872530524080236, guid: 7e8b280f26c91054cad28582322a4261,
         type: 3}
@@ -279,12 +299,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!20 &853552876 stripped
-Camera:
-  m_CorrespondingSourceObject: {fileID: 3140018768174300108, guid: 437bd52a029db3645849886487bc5fa8,
-    type: 3}
-  m_PrefabInstance: {fileID: 2117829162}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1099818749
 GameObject:
   m_ObjectHideFlags: 0
@@ -435,16 +449,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Gameplay 3D
-      objectReference: {fileID: 0}
-    - target: {fileID: 8059757097571664860, guid: 437bd52a029db3645849886487bc5fa8,
-        type: 3}
-      propertyPath: m_Camera
-      value: 
-      objectReference: {fileID: 853552876}
-    - target: {fileID: 8059757097571664860, guid: 437bd52a029db3645849886487bc5fa8,
-        type: 3}
-      propertyPath: m_RenderMode
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

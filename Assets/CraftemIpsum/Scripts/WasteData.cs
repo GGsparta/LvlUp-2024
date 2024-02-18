@@ -10,7 +10,7 @@ namespace CraftemIpsum
 
     public enum PortalColor
     {
-        ORANGE, PURPLE, YELLOW
+        RED, GREEN, BLUE
     }
 
     [Serializable]

@@ -100,7 +100,8 @@ namespace CraftemIpsum._2D
         {
             if (!_current)
             {
-                DoPickUp(_wastesAround[UnityEngine.Random.Range(0, _wastesAround.Count)]);
+                if(_wastesAround.Count > 0)
+                    DoPickUp(_wastesAround[UnityEngine.Random.Range(0, _wastesAround.Count)]);
                 return;
             }
 

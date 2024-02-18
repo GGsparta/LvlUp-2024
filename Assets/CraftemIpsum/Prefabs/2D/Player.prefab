@@ -280,8 +280,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 4
   inAirMovingAbility: 2
-  jumpForce: 3
-  maxSpeed: 6
+  jumpForce: 10
+  maxSpeed: 7
   groundedDamping: 0.05
   transportSpot: {fileID: 1492274043391582530}
   animator: {fileID: 8292033810878360251}
