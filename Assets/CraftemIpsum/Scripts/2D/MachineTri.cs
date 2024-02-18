@@ -29,7 +29,8 @@ namespace CraftemIpsum._2D
             go.GetComponent<Rigidbody2D>().simulated = false;
             go.transform.SetParent(transform);
             go.transform.position = wasteSpot.position + (Vector3)Random.insideUnitCircle * wasteSpotRadius;
-            go.GetComponentInChildren<SpriteRenderer>().material.color = new Color(1, 1, 1, 0.2f);
+            go.GetComponentInChildren<SpriteRenderer>().material.color = new Color(0.5f, 0.5f, 0.5f );
+            go.GetComponentInChildren<SpriteRenderer>().sortingOrder = 0;
             depotSound.Play();
             
             OnRecycled?.Invoke(wasteType);
