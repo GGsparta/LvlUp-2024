@@ -33,8 +33,10 @@ public class WasteManager : MonoBehaviour
 
     private void Update()
     {
-        // TODO Create waste randomnly
+        if (GameManager.Exists && !GameManager.Instance.IsPlaying)
+            return;
 
+        // TODO Create waste randomnly
         if (elaspedTime >= TIME_BEFORE_NEW_WASTE)
         {
             elaspedTime = 0;

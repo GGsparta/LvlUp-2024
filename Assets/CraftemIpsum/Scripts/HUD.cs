@@ -19,7 +19,6 @@ namespace CraftemIpsum
 
         private void Update()
         {
-            Debug.Log(GameManager.Instance.SecondsLeft);
             if (GameManager.Instance.SecondsLeft != _secondsLeftBuffer)
             {
                 _secondsLeftBuffer = GameManager.Instance.SecondsLeft;

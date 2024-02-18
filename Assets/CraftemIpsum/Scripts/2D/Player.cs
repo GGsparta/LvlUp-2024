@@ -79,12 +79,17 @@ namespace CraftemIpsum._2D
 
         public void Update()
         {
+            _rigidbody.simulated = !GameManager.Exists || GameManager.Instance.IsPlaying;
+            if (GameManager.Exists && !GameManager.Instance.IsPlaying)
+                return;
             DoWalk();
             UpdateGraphics();
         }
 
         private void DoPickUp(GameObject go)
         {
+            if (GameManager.Exists && !GameManager.Instance.IsPlaying)
+                return;
             if (_current) return;
             _current = go.GetComponentInParent<Waste>();
             go.GetComponent<SpriteRenderer>().sortingOrder = 0;
@@ -98,6 +103,8 @@ namespace CraftemIpsum._2D
 
         private void DoCast(InputAction.CallbackContext obj)
         {
+            if (GameManager.Exists && !GameManager.Instance.IsPlaying)
+                return;
             if (!_current)
             {
                 if(_wastesAround.Count > 0)
@@ -125,6 +132,11 @@ namespace CraftemIpsum._2D
 
         private void DoJump(InputAction.CallbackContext callbackContext)
         {
+            if (GameManager.Exists && !GameManager.Instance.IsPlaying)
+            {
+                return;
+            }
+
             if (!_grounded)
                 return;
 

@@ -70,6 +70,12 @@ public class Ship : MonoBehaviour
 
     private void Update()
     {
+        if (GameManager.Exists && !GameManager.Instance.IsPlaying)
+        {
+            body.velocity = Vector3.zero;
+            return;
+        }
+
         // [0, 1]
         var mousePosition = camera.ScreenToViewportPoint(Input.mousePosition);
         

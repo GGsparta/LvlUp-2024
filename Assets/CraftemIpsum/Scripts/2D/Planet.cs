@@ -29,6 +29,9 @@ namespace CraftemIpsum._2D
 
         public void FixedUpdate()
         {
+            if (GameManager.Exists && !GameManager.Instance.IsPlaying)
+                return;
+
             foreach (Rigidbody2D body in _listOfAttractedBodies)
             {
                 Vector3 offset = body.transform.position - transform.position;
