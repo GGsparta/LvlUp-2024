@@ -3248,6 +3248,11 @@ PrefabInstance:
       propertyPath: cameraViewportOffset
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4481760048820993622, guid: 437bd52a029db3645849886487bc5fa8,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7006112193366963656, guid: 437bd52a029db3645849886487bc5fa8,
         type: 3}
       propertyPath: cameraViewportOffset

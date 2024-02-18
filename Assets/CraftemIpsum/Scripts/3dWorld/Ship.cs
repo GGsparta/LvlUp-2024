@@ -9,6 +9,9 @@ using UnityEngine.InputSystem;
 
 public class Ship : MonoBehaviour
 {
+    [SerializeField] private AudioSource collectSound;
+    [SerializeField] private AudioSource shootSound;
+    
     private const bool inverseControl = false;
     private const int upModifier = inverseControl ? 1 : -1;
     
@@ -65,6 +68,7 @@ public class Ship : MonoBehaviour
             waste.transform.position = transform.position + transform.forward * xDecalage;
             waste.gameObject.SetActive(true);
             waste.Fire();
+            shootSound.Play();
         }
     }
 
@@ -113,6 +117,8 @@ public class Ship : MonoBehaviour
             wasteList.Add(waste);
             //waste.enabled = false;
             waste.gameObject.SetActive(false);
+            
+            collectSound.Play();
         }
     }
     
