@@ -57,7 +57,7 @@ namespace CraftemIpsum._2D
             _pickUp = input.actions["PickUp"];
             _jump = input.actions["Jump"];
             _rigidbody = GetComponent<Rigidbody2D>();
-            _grounded = true;
+            _grounded = false;
 
             _jump.performed += DoJump;
             _pickUp.performed += DoCast;

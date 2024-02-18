@@ -41,7 +41,7 @@ namespace CraftemIpsum
 
         private void RefreshTimer()
         {
-            timerDisplay.text = $"{_secondsLeftBuffer / 60}:{_secondsLeftBuffer % 60}";
+            timerDisplay.text = $"{_secondsLeftBuffer / 60:00}:{_secondsLeftBuffer % 60:00}";
         }
         
         private void RefreshScore()
