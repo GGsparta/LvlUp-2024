@@ -1,9 +1,6 @@
-using System;
 using System.Collections.Generic;
-using GGL.Extensions;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Windows;
 
 namespace CraftemIpsum._2D
 {
@@ -15,7 +12,7 @@ namespace CraftemIpsum._2D
         [SerializeField] private float inAirMovingAbility = 0.75f;
         [SerializeField] private float jumpForce = 3f;
         [SerializeField] private float maxSpeed = 5f;
-        [SerializeField] private float groundedDamping = 0;
+        [SerializeField] private float groundedDamping;
         [Header("Content")]
         [SerializeField] private Transform transportSpot;
         [SerializeField] private Animator animator;
@@ -25,8 +22,8 @@ namespace CraftemIpsum._2D
 
 
         private InputAction _walk, _jump, _pickUp;
-        private Rigidbody2D _rigidbody;
-        private List<GameObject> _wastesAround = new();
+        private Rigidbody2D _rigidBody;
+        private readonly List<GameObject> _wastesAround = new();
         private bool _grounded;
         private Waste _current;
 
@@ -60,7 +57,7 @@ namespace CraftemIpsum._2D
             _walk = input.actions["Walk"];
             _pickUp = input.actions["PickUp"];
             _jump = input.actions["Jump"];
-            _rigidbody = GetComponent<Rigidbody2D>();
+            _rigidBody = GetComponent<Rigidbody2D>();
             _grounded = false;
 
             _jump.performed += DoJump;
@@ -83,7 +80,7 @@ namespace CraftemIpsum._2D
 
         public void Update()
         {
-            _rigidbody.simulated = !GameManager.Exists || GameManager.Instance.IsPlaying;
+            _rigidBody.simulated = !GameManager.Exists || GameManager.Instance.IsPlaying;
             if (GameManager.Exists && !GameManager.Instance.IsPlaying)
                 return;
             DoWalk();
@@ -124,8 +121,8 @@ namespace CraftemIpsum._2D
                 return;
             }
 
-            var r = _current.GetComponent<Rigidbody2D>();
-            r.velocity = _rigidbody.velocity;
+            Rigidbody2D r = _current.GetComponent<Rigidbody2D>();
+            r.velocity = _rigidBody.velocity;
             r.simulated = true;
             _current.transform.SetParent(null);
             _current.GetComponentInChildren<SpriteRenderer>().sortingOrder = 2;
@@ -145,7 +142,7 @@ namespace CraftemIpsum._2D
             if (!_grounded)
                 return;
 
-            _rigidbody.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
+            _rigidBody.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
             _grounded = false;
             jumpSound.Play();
         }
@@ -157,19 +154,19 @@ namespace CraftemIpsum._2D
 
             if (_grounded)
             {
-                _rigidbody.AddForce(transform.right * (_input * speed), ForceMode2D.Impulse);
-                _rigidbody.velocity = _rigidbody.velocity.normalized * (Mathf.Min(_rigidbody.velocity.magnitude, maxSpeed) * (1 - groundedDamping));
+                _rigidBody.AddForce(transform.right * (_input * speed), ForceMode2D.Impulse);
+                _rigidBody.velocity = _rigidBody.velocity.normalized * (Mathf.Min(_rigidBody.velocity.magnitude, maxSpeed) * (1 - groundedDamping));
             }
             else
             {
-                _rigidbody.AddForce(transform.right * (_input * inAirMovingAbility), ForceMode2D.Force);
-                _rigidbody.velocity = _rigidbody.velocity.normalized * Mathf.Min(_rigidbody.velocity.magnitude, maxSpeed);
+                _rigidBody.AddForce(transform.right * (_input * inAirMovingAbility), ForceMode2D.Force);
+                _rigidBody.velocity = _rigidBody.velocity.normalized * Mathf.Min(_rigidBody.velocity.magnitude, maxSpeed);
             }
         }
 
         private void UpdateGraphics()
         {
-            animator.SetBool(Moving, _rigidbody.velocity.magnitude > .5f);
+            animator.SetBool(Moving, _rigidBody.velocity.magnitude > .5f);
             if(_input != 0f)
                 transform.localScale = new Vector3(_input < 0 ? -1 : 1, 1, 1);
         }

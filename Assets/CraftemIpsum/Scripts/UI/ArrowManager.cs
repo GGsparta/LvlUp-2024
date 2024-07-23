@@ -1,59 +1,56 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using CraftemIpsum.UI;
+using CraftemIpsum._3D;
 using UnityEngine;
 
-public class ArrowManager : MonoBehaviour
+namespace CraftemIpsum.UI
 {
-    [SerializeField]
-    private List<DirectionalArrow> wasteArrows;
-    
-    [SerializeField]
-    private List<DirectionalArrow> portalArrows;
-    
-    [SerializeField]
-    private WasteManager wasteManager;
-    
-    [SerializeField]
-    private PortalManager portalManager;
-    
-    [SerializeField]
-    private Transform objectToFollow;
-    
-    // Start is called before the first frame update
-    void Start()
+    public class ArrowManager : MonoBehaviour
     {
-        
-    }
+        [Header("Prefab configuration")]
+        [SerializeField] private GameObject arrowPrefab;
+        [SerializeField] private Transform arrowContainer;
+        [SerializeField] private List<Sprite> wasteArrows;
+        [SerializeField] private List<Sprite> portalArrows;
+        [Header("Prefab configuration")]
+        [SerializeField] private WasteManager wasteManager;
+        [SerializeField] private PortalManager portalManager;
+        [SerializeField] private Transform ship;
 
-    // Update is called once per frame
-    void Update()
-    {
-        List<Waste> wasteList = wasteManager.getNearWaste(objectToFollow.position, wasteArrows.Count);
-        for (int i=0; i < wasteArrows.Count; i++)
+        private Dictionary<WasteType, DirectionalArrow> _wasteArrows;
+        private Dictionary<PortalColor, DirectionalArrow> _portalArrows;
+        private PortalColor[] _portalColors;
+        private WasteType[] _wasteTypes;
+
+        private void Awake()
         {
-            if (i < wasteList.Count())
+            _wasteTypes = Enum.GetValues(typeof(WasteType)).OfType<WasteType>().ToArray();
+            _wasteArrows = new Dictionary<WasteType, DirectionalArrow>();
+            foreach (WasteType wasteType in _wasteTypes)
             {
-                wasteArrows[i].objectToPoint = wasteList[i].transform;
+                DirectionalArrow arrow = Instantiate(arrowPrefab, arrowContainer).GetComponent<DirectionalArrow>();
+                arrow.Icon = wasteArrows[(int)wasteType];
+                _wasteArrows[wasteType] = arrow;
             }
-            else
+
+            _portalColors = Enum.GetValues(typeof(PortalColor)).OfType<PortalColor>().ToArray();
+            _portalArrows = new Dictionary<PortalColor, DirectionalArrow>();
+            foreach (PortalColor portalColor in _portalColors)
             {
-                wasteArrows[i].objectToPoint = null;
+                DirectionalArrow arrow = Instantiate(arrowPrefab, arrowContainer).GetComponent<DirectionalArrow>();
+                arrow.Icon = portalArrows[(int)portalColor];
+                _portalArrows[portalColor] = arrow;
             }
         }
-        
-        List<Transform> portalList = portalManager.getNearPortals(objectToFollow.position, portalArrows.Count);
-        for (int i=0; i < portalArrows.Count; i++)
+
+        private void FixedUpdate()
         {
-            if (i < portalList.Count())
-            {
-                portalArrows[i].objectToPoint = portalList[i].transform;
-            }
-            else
-            {
-                portalArrows[i].objectToPoint = null;
-            }
+            foreach (WasteType wasteType in _wasteTypes) 
+                _wasteArrows[wasteType].objectToPoint = wasteManager.GetNearestWaste(ship.position, wasteType)?.transform;
+
+            foreach (PortalColor portalColor in _portalColors) 
+                _portalArrows[portalColor].objectToPoint = portalManager.GetNearestPortal(ship.position, portalColor)?.transform;
         }
     }
 }

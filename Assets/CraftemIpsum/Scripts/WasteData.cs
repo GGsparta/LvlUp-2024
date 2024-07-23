@@ -1,13 +1,14 @@
 using System;
-using UnityEngine.Serialization;
 
 namespace CraftemIpsum
 {
+    [Serializable]
     public enum WasteType
     {
         EXHAUST, BARREL, SUSPENSION
     }
 
+    [Serializable]
     public enum PortalColor
     {
         RED, GREEN, BLUE

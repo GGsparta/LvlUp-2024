@@ -30,7 +30,6 @@ namespace CraftemIpsum
                     GameOver();
                 }
             }
-
             
             if (GameManager.Instance.Score != _scoreBuffer)
             {
@@ -49,7 +48,7 @@ namespace CraftemIpsum
             scoreDisplay.text = $"<b>{_scoreBuffer}</b><i><size=26> déchet(s) recyclé(s)</size></i>";
         }
 
-        public void GameOver()
+        private void GameOver()
         {
             goTimerDisplay.text = timerDisplay.text;
             goScoreDisplay.text = scoreDisplay.text;

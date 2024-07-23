@@ -15,7 +15,7 @@ namespace CraftemIpsum
         public event Action OnPlay;
         public event Action OnPause;
 
-        public bool IsPlaying { get; private set; } = false;
+        public bool IsPlaying { get; private set; }
         public int Score { get; private set; }
         public int SecondsLeft { get; private set; }
 

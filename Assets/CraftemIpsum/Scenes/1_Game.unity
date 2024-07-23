@@ -1653,7 +1653,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 797239233}
         m_TargetAssemblyTypeName: Decompte, Assembly-CSharp
-        m_MethodName: StartDecompte
+        m_MethodName: StartCountdown
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

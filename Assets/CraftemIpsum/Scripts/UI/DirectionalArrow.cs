@@ -7,28 +7,37 @@ namespace CraftemIpsum.UI
     {
         [Header("UI")]
         [SerializeField] private Image graphics;
+        [SerializeField] private Image cursor;
         [SerializeField] private float marginX;
         [SerializeField] private float marginY;
     
         [Header("Controls")]
         public Camera targetCamera;
         public float cameraViewportOffset;
+
         public Transform objectToPoint;
 
         private Rect _display;
 
+        public Sprite Icon
+        {
+            get => graphics.sprite;
+            set => graphics.sprite = value;
+        }
+
         private void Start()
         {
             if (!targetCamera) targetCamera = Camera.main;
-            _display = new Rect(targetCamera.pixelWidth * cameraViewportOffset, 0, targetCamera.pixelWidth, targetCamera.pixelHeight);
+            _display = new Rect(targetCamera!.pixelWidth * cameraViewportOffset, 0, targetCamera.pixelWidth, targetCamera.pixelHeight);
         }
 
 
         private void Update()
         {
-            if (objectToPoint == null)
+            if (!objectToPoint)
             {
                 graphics.enabled = false;
+                cursor.enabled = false;
                 return;
             }
             
@@ -66,7 +75,7 @@ namespace CraftemIpsum.UI
 
                 // Finally, we can set the rotation of the arrow, calculated from the offset between the center of the screen and the arrow position
                 Vector2 direction = (Vector2)finalCanvasPosition - centerPoint;
-                graphics.transform.localEulerAngles =
+                cursor.transform.localEulerAngles =
                     Vector3.forward * Vector2.SignedAngle(Vector2.right, direction);
             }
             else
@@ -75,7 +84,7 @@ namespace CraftemIpsum.UI
             }
 
             // Refresh graphic state (display the poi or a direction tip)
-            graphics.enabled = isOutsideOfScreen;
+            graphics.enabled = cursor.enabled = isOutsideOfScreen;
         }
     }
 }
