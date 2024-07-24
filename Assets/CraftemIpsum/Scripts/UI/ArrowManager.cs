@@ -8,15 +8,16 @@ namespace CraftemIpsum.UI
 {
     public class ArrowManager : MonoBehaviour
     {
+        [SerializeField] private Transform ship;
+        [SerializeField] private Camera renderCam;
         [Header("Prefab configuration")]
         [SerializeField] private GameObject arrowPrefab;
         [SerializeField] private Transform arrowContainer;
         [SerializeField] private List<Sprite> wasteArrows;
         [SerializeField] private List<Sprite> portalArrows;
-        [Header("Prefab configuration")]
+        [Header("Managers")]
         [SerializeField] private WasteManager wasteManager;
         [SerializeField] private PortalManager portalManager;
-        [SerializeField] private Transform ship;
 
         private Dictionary<WasteType, DirectionalArrow> _wasteArrows;
         private Dictionary<PortalColor, DirectionalArrow> _portalArrows;
@@ -30,7 +31,7 @@ namespace CraftemIpsum.UI
             foreach (WasteType wasteType in _wasteTypes)
             {
                 DirectionalArrow arrow = Instantiate(arrowPrefab, arrowContainer).GetComponent<DirectionalArrow>();
-                arrow.Icon = wasteArrows[(int)wasteType];
+                arrow.Setup(wasteArrows[(int)wasteType], renderCam);
                 _wasteArrows[wasteType] = arrow;
             }
 
@@ -39,7 +40,7 @@ namespace CraftemIpsum.UI
             foreach (PortalColor portalColor in _portalColors)
             {
                 DirectionalArrow arrow = Instantiate(arrowPrefab, arrowContainer).GetComponent<DirectionalArrow>();
-                arrow.Icon = portalArrows[(int)portalColor];
+                arrow.Setup(portalArrows[(int)portalColor], renderCam);
                 _portalArrows[portalColor] = arrow;
             }
         }

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,25 +13,11 @@ namespace CraftemIpsum.UI
         [SerializeField] private float marginY;
     
         [Header("Controls")]
-        public Camera targetCamera;
-        public float cameraViewportOffset;
+        [SerializeField] private Camera targetCamera;
 
         public Transform objectToPoint;
 
         private Rect _display;
-
-        public Sprite Icon
-        {
-            get => graphics.sprite;
-            set => graphics.sprite = value;
-        }
-
-        private void Start()
-        {
-            if (!targetCamera) targetCamera = Camera.main;
-            _display = new Rect(targetCamera!.pixelWidth * cameraViewportOffset, 0, targetCamera.pixelWidth, targetCamera.pixelHeight);
-        }
-
 
         private void Update()
         {
@@ -85,6 +72,14 @@ namespace CraftemIpsum.UI
 
             // Refresh graphic state (display the poi or a direction tip)
             graphics.enabled = cursor.enabled = isOutsideOfScreen;
+        }
+
+        public void Setup(Sprite icon, Camera cam, bool isRightSide = true)
+        {
+            targetCamera = cam;
+            graphics.sprite = icon;
+            
+            _display = new Rect(targetCamera!.pixelWidth * Convert.ToInt32(isRightSide), 0, targetCamera.pixelWidth, targetCamera.pixelHeight);
         }
     }
 }
