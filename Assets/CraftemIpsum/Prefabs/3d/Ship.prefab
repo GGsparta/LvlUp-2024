@@ -368,6 +368,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collectSound: {fileID: 1727744471951083218}
   shootSound: {fileID: 7302202925919555173}
+  model: {fileID: 5230592402068525746}
   camera: {fileID: 0}
 --- !u!114 &2784429853972453069
 MonoBehaviour:

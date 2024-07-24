@@ -9,125 +9,112 @@ namespace CraftemIpsum._3D
     {
         [SerializeField] private AudioSource collectSound;
         [SerializeField] private AudioSource shootSound;
+        [SerializeField] private Transform model;
+        [SerializeField] private new Camera camera;
     
-        private const bool inverseControl = false;
-        private const int upModifier = inverseControl ? 1 : -1;
-    
-    
-        private const float MIN_MOVEMENT_MAGNITUDE = 0.1f;
+        private const bool INVERSE_CONTROL = false;
+        
+        // ReSharper disable once HeuristicUnreachableCode
+        private const int UP_MODIFIER = INVERSE_CONTROL ? 1 : -1;
         private const float VELOCITY = 15f;
-   
-        //cas gimbal lock
-        private const float MOVEMENT_COEFF = 50f;
+        private const float MOVEMENT_FACTOR = 50f;
     
-        private Rigidbody body;
-
-        //private Quaternion rotation = Quaternion.identity;
-        private Vector3 rotation = Vector3.zero;
-    
-        [SerializeField]
-        private new Camera camera;
-
-        private List<Waste> wasteList;
-        private PlayerInput input;
-    
-
-    
+        private Rigidbody _body;
+        private Quaternion _rotation = Quaternion.identity;
+        private Quaternion _defaultModelRotation;
+        private List<Waste> _wasteList;
+        private PlayerInput _input;
+        
     
         private void Start()
         {
-            wasteList = new List<Waste>();
-            body = GetComponent<Rigidbody>();
-            rotation = transform.eulerAngles;
-            body.velocity = transform.forward * VELOCITY;
+            _wasteList = new List<Waste>();
+            _body = GetComponent<Rigidbody>();
+            _rotation = transform.rotation;
+            _defaultModelRotation = model.localRotation;
+            _body.velocity = transform.forward * VELOCITY;
         
-            input = GetComponent<PlayerInput>();
-            input.actions["Shoot"].performed += DoShoot;
+            _input = GetComponent<PlayerInput>();
+            _input.actions["Shoot"].performed += DoShoot;
         }
 
         private void DoShoot(InputAction.CallbackContext obj)
         {
-            if (wasteList.Count > 0)
-            {
-                Waste waste = wasteList[0];
-                wasteList.RemoveAt(0);
-
-                Quaternion rotation = transform.rotation;
-                if (waste.Type == WasteType.EXHAUST)
-                {
-                    rotation *= Quaternion.Euler(0 ,0, 90);
-                }
-                waste.SetRotation(rotation);
-
-                float xDecalage = 5;
-                if (waste.Type == WasteType.EXHAUST) xDecalage = 4;
-                if (waste.Type == WasteType.SUSPENSION) xDecalage = 4;
+            if (_wasteList.Count <= 0) return;
             
-                waste.transform.position = transform.position + transform.forward * xDecalage;
-                waste.gameObject.SetActive(true);
-                waste.Fire();
-                shootSound.Play();
+            Waste waste = _wasteList[0];
+            _wasteList.RemoveAt(0);
+
+            Quaternion rot = model.rotation * Quaternion.Inverse(_defaultModelRotation);
+            if (waste.Type == WasteType.EXHAUST)
+            {
+                rot *= Quaternion.Euler(0 ,0, 90);
             }
+            waste.SetRotation(rot);
+
+            float xOffset = 5;
+            switch (waste.Type)
+            {
+                case WasteType.EXHAUST:
+                case WasteType.SUSPENSION:
+                    xOffset = 4;
+                    break;
+            }
+
+            waste.transform.position = transform.position + model.right * xOffset;
+            waste.gameObject.SetActive(true);
+            waste.Fire();
+            shootSound.Play();
         }
 
         private void Update()
         {
             if (GameManager.Exists && !GameManager.Instance.IsPlaying)
             {
-                body.velocity = Vector3.zero;
+                _body.velocity = Vector3.zero;
                 return;
             }
 
             // [0, 1]
-            var mousePosition = camera.ScreenToViewportPoint(Input.mousePosition);
+            Vector3 mousePosition = camera.ScreenToViewportPoint(Input.mousePosition);
         
             // [-1, 1]
             mousePosition.x = mousePosition.x.Clamp(0,1).Remap(0,1,-1,1);
-            mousePosition.y = mousePosition.y.Clamp(0,1).Remap(0,1,-1,1) * upModifier;
+            mousePosition.y = mousePosition.y.Clamp(0,1).Remap(0,1,-1,1) * UP_MODIFIER;
             mousePosition.z = 0f;
         
-            /* rotation *= Quaternion.Euler(new Vector3(mousePosition.y, mousePosition.x, 0) * (MOVEMENT_COEFF * Time.deltaTime));
-      transform.localRotation = rotation;*/
-     
-            if ((Vector3.Angle(transform.forward, Vector3.up) > 5 && Vector3.Angle(transform.forward, -Vector3.up) > 5) ||
-                (Vector3.Angle(transform.forward, Vector3.up) < 5 && mousePosition.y > 0) ||
-                (Vector3.Angle(transform.forward, -Vector3.up) < 5 && mousePosition.y < 0))
-            {
-                rotation += new Vector3(mousePosition.y, mousePosition.x, 0) * (MOVEMENT_COEFF * Time.deltaTime);
-            }
-            else
-            {
-                rotation += new Vector3(0, mousePosition.x, 0) * (MOVEMENT_COEFF * Time.deltaTime);
-            }
-     
-            body.MoveRotation(Quaternion.Euler(rotation));
-      
-
-            body.velocity = transform.forward * VELOCITY;
-
+            // Rotate ship
+            _rotation *= Quaternion.Euler(new Vector3(mousePosition.y, mousePosition.x, 0) * (MOVEMENT_FACTOR * Time.deltaTime));
+            _body.MoveRotation(_rotation);
+            _body.velocity = transform.forward * VELOCITY;
+            
+            // Effect rotation on model
+            model.localRotation = _defaultModelRotation
+                                  * Quaternion.Euler(Vector3.up * Mathf.SmoothStep(-50f, 50f, mousePosition.y.Remap(-1,1,0,1)))
+                                  * Quaternion.Euler(Vector3.forward * Mathf.SmoothStep(-30f, 30f, mousePosition.x.Remap(-1,1,0,1)))
+                                  * Quaternion.Euler(Vector3.right * Mathf.SmoothStep(80f, -80f, mousePosition.x.Remap(-1,1,0,1)))
+                                  ;
         }
 
         private void OnTriggerEnter(Collider other)
         {
             Waste waste = other.GetComponent<Waste>();
-            if (waste != null)
-            {
-                wasteList.Add(waste);
-                //waste.enabled = false;
-                waste.gameObject.SetActive(false);
+            if (!waste) return;
             
-                collectSound.Play();
-            }
+            _wasteList.Add(waste);
+            waste.gameObject.SetActive(false);
+            
+            collectSound.Play();
         }
     
         private void OnEnable()
         {
-            if(input != null) input.actions["Shoot"].Enable();
+            if(_input) _input.actions["Shoot"].Enable();
         }
 
         private void OnDisable()
         {
-            if(input != null) input.actions["Shoot"].Disable();
+            if(_input) _input.actions["Shoot"].Disable();
         }
     }
 }
