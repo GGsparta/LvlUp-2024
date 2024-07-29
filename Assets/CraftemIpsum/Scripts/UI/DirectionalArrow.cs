@@ -18,6 +18,10 @@ namespace CraftemIpsum.UI
         public Transform objectToPoint;
 
         private Rect _display;
+        
+        
+        private void OnEnable() => Settings.OnSettingsUpdated += SetupDisplay;
+        private void OnDisable() => Settings.OnSettingsUpdated -= SetupDisplay;
 
         private void Update()
         {
@@ -74,12 +78,14 @@ namespace CraftemIpsum.UI
             graphics.enabled = cursor.enabled = isOutsideOfScreen;
         }
 
-        public void Setup(Sprite icon, Camera cam, bool isRightSide = true)
+        public void Setup(Sprite icon, Camera cam)
         {
             targetCamera = cam;
             graphics.sprite = icon;
-            
-            _display = new Rect(targetCamera!.pixelWidth * Convert.ToInt32(isRightSide), 0, targetCamera.pixelWidth, targetCamera.pixelHeight);
+            SetupDisplay();
         }
+
+        private void SetupDisplay() => 
+            _display = new Rect(targetCamera!.pixelWidth * Convert.ToInt32(Settings.Layout == Layout.J1_J2), 0, targetCamera.pixelWidth, targetCamera.pixelHeight);
     }
 }

@@ -12,10 +12,7 @@ namespace CraftemIpsum._3D
         [SerializeField] private Transform model;
         [SerializeField] private new Camera camera;
     
-        private const bool INVERSE_CONTROL = false;
         
-        // ReSharper disable once HeuristicUnreachableCode
-        private const int UP_MODIFIER = INVERSE_CONTROL ? 1 : -1;
         private const float VELOCITY = 15f;
         private const float MOVEMENT_FACTOR = 50f;
     
@@ -79,8 +76,8 @@ namespace CraftemIpsum._3D
             Vector3 mousePosition = camera.ScreenToViewportPoint(Input.mousePosition);
         
             // [-1, 1]
-            mousePosition.x = mousePosition.x.Clamp(0,1).Remap(0,1,-1,1);
-            mousePosition.y = mousePosition.y.Clamp(0,1).Remap(0,1,-1,1) * UP_MODIFIER;
+            mousePosition.x = mousePosition.x.Clamp(0,1).Remap(0,1,-1,1) * (Settings.InvertedAxis ? -1 : 1);
+            mousePosition.y = mousePosition.y.Clamp(0,1).Remap(0,1,-1,1) * (Settings.InvertedAxis ? 1 : -1);
             mousePosition.z = 0f;
         
             // Rotate ship

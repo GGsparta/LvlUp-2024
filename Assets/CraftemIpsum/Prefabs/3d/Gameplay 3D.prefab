@@ -490,6 +490,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb01b1eeaf8c324488800fcc81ea211a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ship: {fileID: 5325598429655113590}
+  renderCam: {fileID: 0}
   arrowPrefab: {fileID: 1080081533315338676, guid: 5b0361f9f5bb0d94da5e5fff04f10fc1,
     type: 3}
   arrowContainer: {fileID: 5705799777477954161}
@@ -503,7 +505,6 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 9240c94df9103434ea0202cb34390b15, type: 3}
   wasteManager: {fileID: 7273521800118556893}
   portalManager: {fileID: 1224427253793104019}
-  ship: {fileID: 5325598429655113590}
 --- !u!1 &2681734328551339375
 GameObject:
   m_ObjectHideFlags: 0
@@ -868,7 +869,7 @@ GameObject:
   - component: {fileID: 2663783025245048905}
   - component: {fileID: 4481760048820993622}
   m_Layer: 0
-  m_Name: Main Camera
+  m_Name: Camera 3D
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

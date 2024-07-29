@@ -2320,6 +2320,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   durationInSeconds: 120
   delayBeforeStart: 4
+  j1Camera: {fileID: 1951163046}
+  j2Camera: {fileID: 523406784}
 --- !u!114 &1390460177
 MonoBehaviour:
   m_ObjectHideFlags: 0
