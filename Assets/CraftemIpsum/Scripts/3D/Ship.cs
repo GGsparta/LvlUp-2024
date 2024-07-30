@@ -4,6 +4,7 @@ using GGL.Components;
 using GGL.Extensions;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Random = UnityEngine.Random;
 
 namespace CraftemIpsum._3D
 {
@@ -13,12 +14,14 @@ namespace CraftemIpsum._3D
         [SerializeField] private AudioSource shootSound;
         [SerializeField] private Transform model;
         [SerializeField] private new Camera camera;
+        [SerializeField] private Material fireMaterial;
+        [SerializeField] private ParticleSystem fireParticles;
         public event Action<float> OnBoost;
         public event Action OnShoot;
         
-        private const float VELOCITY = 15f;
+        private const float VELOCITY = 20f;
         private const float MOVEMENT_FACTOR = 50f;
-        private const float DASH_FACTOR = 3f;
+        private const float DASH_FACTOR = 2.25f;
         private const float DASH_DURATION = 2f;
         private const float DASH_DELAY = 2f;
         private static readonly Vector3 MODEL_ROTATION_EFFECT = new(0.89f, 0.56f, 0.33f);
@@ -30,6 +33,7 @@ namespace CraftemIpsum._3D
         private PlayerInput _input;
         private float _lastBoostUsage;
         private FollowPosition _cameraFollow;
+        private static readonly int EMISSION_COLOR = Shader.PropertyToID("_EmissionColor");
 
 
         private void Start()
@@ -80,9 +84,20 @@ namespace CraftemIpsum._3D
             
             // Velocity & boost
             float boost = 1 - Mathf.Pow((Time.timeSinceLevelLoad - _lastBoostUsage) / DASH_DURATION, 3);
-            _cameraFollow.flexibility = Mathf.SmoothStep(0, .9f, boost);
             float velocityScale = Mathf.SmoothStep(1f, DASH_FACTOR, boost);
             _body.velocity = transform.forward * (VELOCITY * velocityScale);
+            _cameraFollow.flexibility = Mathf.SmoothStep(0, .9f, boost);
+            ParticleSystem.EmissionModule module = fireParticles.emission;
+            module.rateOverTime = boost * 30f;
+            
+            if (boost > 0)
+            {
+                fireMaterial.EnableKeyword("_EMISSION");
+                Vector4 color = fireMaterial.GetColor(EMISSION_COLOR);
+                color.z = boost * 2f + Random.Range(-1f, 1f);
+                fireMaterial.SetColor(EMISSION_COLOR, color);
+            }
+            else fireMaterial.DisableKeyword("_EMISSION");
         }
 
 
