@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using GGL.Components;
 using GGL.Extensions;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -28,12 +29,14 @@ namespace CraftemIpsum._3D
         private List<Waste> _wasteList;
         private PlayerInput _input;
         private float _lastBoostUsage;
+        private FollowPosition _cameraFollow;
 
 
         private void Start()
         {
             _wasteList = new List<Waste>();
             _body = GetComponent<Rigidbody>();
+            _cameraFollow = camera.GetComponent<FollowPosition>();
             _rotation = transform.rotation;
             _defaultModelRotation = model.localRotation;
             _body.velocity = transform.forward * VELOCITY;
@@ -76,8 +79,10 @@ namespace CraftemIpsum._3D
                                       -90f * MODEL_ROTATION_EFFECT.x, rawInput.x));
             
             // Velocity & boost
-            float boost = Time.timeSinceLevelLoad - _lastBoostUsage < DASH_DURATION ? DASH_FACTOR : 1f;
-            _body.velocity = transform.forward * (VELOCITY * boost);
+            float boost = 1 - Mathf.Pow((Time.timeSinceLevelLoad - _lastBoostUsage) / DASH_DURATION, 3);
+            _cameraFollow.flexibility = Mathf.SmoothStep(0, .9f, boost);
+            float velocityScale = Mathf.SmoothStep(1f, DASH_FACTOR, boost);
+            _body.velocity = transform.forward * (VELOCITY * velocityScale);
         }
 
 
