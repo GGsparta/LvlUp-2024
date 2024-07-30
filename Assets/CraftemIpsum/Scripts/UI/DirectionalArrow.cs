@@ -17,12 +17,6 @@ namespace CraftemIpsum.UI
 
         public Transform objectToPoint;
 
-        private Rect _display;
-        
-        
-        private void OnEnable() => Settings.OnSettingsUpdated += SetupDisplay;
-        private void OnDisable() => Settings.OnSettingsUpdated -= SetupDisplay;
-
         private void Update()
         {
             if (!objectToPoint)
@@ -34,8 +28,10 @@ namespace CraftemIpsum.UI
             
             // Compute position and bounds depending on the type of display (fullscreen or in-canvas rect)
             Vector3 canvasPosition = targetCamera.WorldToScreenPoint(objectToPoint.position);
-            Vector2 minPoint = _display.min;
-            Vector2 maxPoint = _display.max;
+            Rect parentRect = ((RectTransform)transform.parent).rect;
+            Vector2 parentPosition = transform.parent.position;
+            Vector2 minPoint = parentPosition + parentRect.min;
+            Vector2 maxPoint = parentPosition + parentRect.max;
             Vector2 minMarginPoint = new(minPoint.x + marginX, minPoint.y + marginY);
             Vector2 maxMarginPoint = new(maxPoint.x - marginX, maxPoint.y - marginY);
             Vector2 centerPoint = (minPoint + maxPoint) / 2;
@@ -82,10 +78,6 @@ namespace CraftemIpsum.UI
         {
             targetCamera = cam;
             graphics.sprite = icon;
-            SetupDisplay();
         }
-
-        private void SetupDisplay() => 
-            _display = new Rect(targetCamera!.pixelWidth * Convert.ToInt32(Settings.Layout == Layout.J1_J2), 0, targetCamera.pixelWidth, targetCamera.pixelHeight);
     }
 }

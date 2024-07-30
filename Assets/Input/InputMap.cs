@@ -191,6 +191,15 @@ public partial class @InputMap: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Boost"",
+                    ""type"": ""Button"",
+                    ""id"": ""293fbdd6-0961-4a0e-9ff6-0bd228b85fd3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -202,6 +211,17 @@ public partial class @InputMap: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Shoot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""62e1b08b-95b7-4139-ba51-73161a17e32b"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Boost"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -218,6 +238,7 @@ public partial class @InputMap: IInputActionCollection2, IDisposable
         // Gameplay 3D
         m_Gameplay3D = asset.FindActionMap("Gameplay 3D", throwIfNotFound: true);
         m_Gameplay3D_Shoot = m_Gameplay3D.FindAction("Shoot", throwIfNotFound: true);
+        m_Gameplay3D_Boost = m_Gameplay3D.FindAction("Boost", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -342,11 +363,13 @@ public partial class @InputMap: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Gameplay3D;
     private List<IGameplay3DActions> m_Gameplay3DActionsCallbackInterfaces = new List<IGameplay3DActions>();
     private readonly InputAction m_Gameplay3D_Shoot;
+    private readonly InputAction m_Gameplay3D_Boost;
     public struct Gameplay3DActions
     {
         private @InputMap m_Wrapper;
         public Gameplay3DActions(@InputMap wrapper) { m_Wrapper = wrapper; }
         public InputAction @Shoot => m_Wrapper.m_Gameplay3D_Shoot;
+        public InputAction @Boost => m_Wrapper.m_Gameplay3D_Boost;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay3D; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -359,6 +382,9 @@ public partial class @InputMap: IInputActionCollection2, IDisposable
             @Shoot.started += instance.OnShoot;
             @Shoot.performed += instance.OnShoot;
             @Shoot.canceled += instance.OnShoot;
+            @Boost.started += instance.OnBoost;
+            @Boost.performed += instance.OnBoost;
+            @Boost.canceled += instance.OnBoost;
         }
 
         private void UnregisterCallbacks(IGameplay3DActions instance)
@@ -366,6 +392,9 @@ public partial class @InputMap: IInputActionCollection2, IDisposable
             @Shoot.started -= instance.OnShoot;
             @Shoot.performed -= instance.OnShoot;
             @Shoot.canceled -= instance.OnShoot;
+            @Boost.started -= instance.OnBoost;
+            @Boost.performed -= instance.OnBoost;
+            @Boost.canceled -= instance.OnBoost;
         }
 
         public void RemoveCallbacks(IGameplay3DActions instance)
@@ -392,5 +421,6 @@ public partial class @InputMap: IInputActionCollection2, IDisposable
     public interface IGameplay3DActions
     {
         void OnShoot(InputAction.CallbackContext context);
+        void OnBoost(InputAction.CallbackContext context);
     }
 }

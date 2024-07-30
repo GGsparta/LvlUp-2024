@@ -12,7 +12,7 @@ namespace CraftemIpsum.UI
         [SerializeField] private Camera renderCam;
         [Header("Prefab configuration")]
         [SerializeField] private GameObject arrowPrefab;
-        [SerializeField] private Transform arrowContainer;
+        [SerializeField] private RectTransform arrowContainer;
         [SerializeField] private List<Sprite> wasteArrows;
         [SerializeField] private List<Sprite> portalArrows;
         [Header("Managers")]
@@ -24,6 +24,9 @@ namespace CraftemIpsum.UI
         private PortalColor[] _portalColors;
         private WasteType[] _wasteTypes;
 
+        private void OnEnable() => Settings.OnSettingsUpdated += SetupDisplay;
+        private void OnDisable() => Settings.OnSettingsUpdated -= SetupDisplay;
+        
         private void Awake()
         {
             _wasteTypes = Enum.GetValues(typeof(WasteType)).OfType<WasteType>().ToArray();
@@ -43,6 +46,8 @@ namespace CraftemIpsum.UI
                 arrow.Setup(portalArrows[(int)portalColor], renderCam);
                 _portalArrows[portalColor] = arrow;
             }
+            
+            SetupDisplay();
         }
 
         private void FixedUpdate()
@@ -52,6 +57,13 @@ namespace CraftemIpsum.UI
 
             foreach (PortalColor portalColor in _portalColors) 
                 _portalArrows[portalColor].objectToPoint = portalManager.GetNearestPortal(ship.position, portalColor)?.transform;
+        }
+
+        private void SetupDisplay()
+        {
+            Rect rect = renderCam.rect;
+            arrowContainer.anchorMin = rect.min;
+            arrowContainer.anchorMax = rect.max;
         }
     }
 }

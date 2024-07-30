@@ -27,14 +27,14 @@ namespace CraftemIpsum._2D
         private bool _grounded;
         private Waste _current;
 
-        private static readonly int Grounded = Animator.StringToHash("Grounded");
-        private static readonly int Moving = Animator.StringToHash("Moving");
+        private static readonly int GROUNDED = Animator.StringToHash("Grounded");
+        private static readonly int MOVING = Animator.StringToHash("Moving");
         private float _input;
 
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (other.CompareTag("Ground")) animator.SetBool(Grounded, _grounded = true);
+            if (other.CompareTag("Ground")) animator.SetBool(GROUNDED, _grounded = true);
             else if (other.CompareTag("Waste"))
             {
                 DoPickUp(other.gameObject);
@@ -44,7 +44,7 @@ namespace CraftemIpsum._2D
 
         private void OnTriggerExit2D(Collider2D other)
         {
-            if (other.CompareTag("Ground")) animator.SetBool(Grounded, _grounded = false);
+            if (other.CompareTag("Ground")) animator.SetBool(GROUNDED, _grounded = false);
             else if (other.CompareTag("Waste"))
             {
                 _wastesAround.Remove(other.gameObject);
@@ -166,7 +166,7 @@ namespace CraftemIpsum._2D
 
         private void UpdateGraphics()
         {
-            animator.SetBool(Moving, _rigidBody.velocity.magnitude > .5f);
+            animator.SetBool(MOVING, _rigidBody.velocity.magnitude > .5f);
             if(_input != 0f)
                 transform.localScale = new Vector3(_input < 0 ? -1 : 1, 1, 1);
         }

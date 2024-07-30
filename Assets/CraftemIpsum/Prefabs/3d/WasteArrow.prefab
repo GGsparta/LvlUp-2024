@@ -55,7 +55,6 @@ MonoBehaviour:
   marginX: 50
   marginY: 50
   targetCamera: {fileID: 0}
-  cameraViewportOffset: 0
   objectToPoint: {fileID: 0}
 --- !u!1 &1967003790242496741
 GameObject:

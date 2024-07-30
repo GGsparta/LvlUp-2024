@@ -2487,6 +2487,12 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1454706780}
   m_CullTransparentMesh: 1
+--- !u!223 &1459490760 stripped
+Canvas:
+  m_CorrespondingSourceObject: {fileID: 8059757097571664860, guid: 437bd52a029db3645849886487bc5fa8,
+    type: 3}
+  m_PrefabInstance: {fileID: 2117829162}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1494373384
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3178,9 +3184,9 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 111727570814207530, guid: 437bd52a029db3645849886487bc5fa8,
         type: 3}
-      propertyPath: renderCam
+      propertyPath: canvas
       value: 
-      objectReference: {fileID: 523406784}
+      objectReference: {fileID: 1459490760}
     - target: {fileID: 1169259017792189093, guid: 437bd52a029db3645849886487bc5fa8,
         type: 3}
       propertyPath: cameraViewportOffset
@@ -3316,11 +3322,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Gameplay 3D
       objectReference: {fileID: 0}
-    - target: {fileID: 8059757097571664860, guid: 437bd52a029db3645849886487bc5fa8,
-        type: 3}
-      propertyPath: m_Camera
-      value: 
-      objectReference: {fileID: 1951163046}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
