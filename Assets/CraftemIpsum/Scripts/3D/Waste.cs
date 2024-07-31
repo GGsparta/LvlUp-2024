@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 
 namespace CraftemIpsum._3D
@@ -7,111 +8,84 @@ namespace CraftemIpsum._3D
         private const float MOVING_DURATION = 5;
         private const float MOVING_MAX_SPEED = 35;
     
-        private Quaternion initRotation;
-        private bool isMoving;
-        private float movingDuration;
-
+        [SerializeField] private WasteType wasteType;
+        public WasteType Type => wasteType;
         public bool IsDestroyedWaste { get; private set; } = false;
 
-        private WasteManager manager;
-    
-        [SerializeField]
-        private WasteType wasteType;
-
-        private Rigidbody wasteBody;
-    
-        public WasteType Type
-        {
-            get { return wasteType; }
-        }
-    
+        
+        private Quaternion _initRotation;
+        private bool _isMoving;
+        private float _movingDuration;
+        private WasteManager _manager;
+        private Rigidbody _wasteBody;
+        
 
         private void Start()
         {
-            //initRotation = Quaternion.Euler(wasteType == WasteType.SUSPENSION ? -90 : 0, 0, 0);
-            initRotation = Quaternion.Euler(0, 0, 0);
-            isMoving = false;
-            manager = gameObject.GetComponentInParent<WasteManager>();
-            wasteBody = GetComponent<Rigidbody>();
+            _initRotation = Quaternion.Euler(0, 0, 0);
+            _isMoving = false;
+            _manager = gameObject.GetComponentInParent<WasteManager>();
+            _wasteBody = GetComponent<Rigidbody>();
         }
 
-        public void SetRotation(Quaternion q)
-        {
-            transform.rotation = initRotation * q;
-        }
+        public void SetRotation(Quaternion rotation) => transform.rotation = _initRotation * rotation;
 
         private void Update()
         {
-            if (isMoving)
+            if (!_isMoving) return;
+            
+            if (_movingDuration >= MOVING_DURATION)
             {
-                if (movingDuration >= MOVING_DURATION)
-                {
-                    isMoving = false;
-                    movingDuration = 0;
-                }
-                else
-                {
-                    var coeff = movingDuration / MOVING_DURATION;
-
-                    /*if (wasteBody == null) 
-                {*/
-                    transform.position += transform.forward * (Time.deltaTime * MOVING_MAX_SPEED *
-                                                               Mathf.Cos(coeff * Mathf.PI / 2));
-                    /*}
-                else
-                {
-                    wasteBody.velocity = transform.forward * (Time.deltaTime * MOVING_MAX_SPEED *
-                        Mathf.Cos(coeff * Mathf.PI / 2));
-                }*/
-
-                    movingDuration += Time.deltaTime;
-                }
+                _isMoving = false;
+                _movingDuration = 0;
+            }
+            else
+            {
+                float coeff = _movingDuration / MOVING_DURATION;
+                transform.position += transform.forward * (Time.deltaTime * MOVING_MAX_SPEED *
+                                                           Mathf.Cos(coeff * Mathf.PI / 2));
+                _movingDuration += Time.deltaTime;
             }
         }
 
         public void Fire()
         {
-            if (wasteBody != null)
+            if (_wasteBody != null)
             {
-                wasteBody.velocity = Vector3.zero;
-                wasteBody.angularVelocity = Vector3.zero;
+                _wasteBody.velocity = Vector3.zero;
+                _wasteBody.angularVelocity = Vector3.zero;
             }
-            isMoving = true;
-            movingDuration = 0;
+            _isMoving = true;
+            _movingDuration = 0;
         }
 
         private void OnTriggerEnter(Collider other)
         {
             if (other.name.Contains("WastePortal"))
             {
-                // pas beau mais fonctionnel
-                PortalColor color;
-                if (other.name.Contains("Red")) color = PortalColor.RED;
-                else if (other.name.Contains("Blue")) color = PortalColor.BLUE;
-                else color = PortalColor.GREEN;
-            
-                manager.EmitWasteEvent(new WasteData
+                PortalColor color = other.name switch
+                {
+                    "Red" => PortalColor.RED,
+                    "Blue" => PortalColor.BLUE,
+                    _ => PortalColor.GREEN
+                };
+
+                _manager.EmitWasteEvent(new WasteData
                 {
                     type = wasteType,
                     portalColor = color
                 });
-                GameObject.Destroy(gameObject);
+                
+                Destroy(gameObject);
                 IsDestroyedWaste = true;
             }
-        }
-
-        private void OnCollisionEnter(Collision other)
-        {
-            if (other.gameObject.name.Contains("Wall"))
+            
+            if (other.name.Contains("Wall"))
             {
-                //isMoving = false;
-                transform.rotation *= Quaternion.Euler(0, 180, 0);
+                GetComponent<Collider>().enabled = false;
 
-                if (wasteBody != null)
-                {
-                    wasteBody.velocity = Vector3.zero;
-                    wasteBody.angularVelocity = Vector3.zero;
-                }
+                transform.DOScale(Vector3.one * 0.001f, 4f)
+                    .OnComplete(() => Destroy(gameObject));
             }
         }
     }

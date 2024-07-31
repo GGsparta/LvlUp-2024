@@ -76,6 +76,7 @@ namespace CraftemIpsum._3D
             
                 //GameObject newObject = Instantiate(prefab, new Vector3(x, y, z), prefab.transform.rotation, transform);
                 GameObject newObject = Instantiate(prefab, new Vector3(x, y, z), Random.rotation, transform);
+                newObject.name = prefab.name;
             
                 listOfWaste.Add(newObject.GetComponent<Waste>());
             }
