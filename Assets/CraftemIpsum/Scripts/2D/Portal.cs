@@ -14,6 +14,8 @@ namespace CraftemIpsum._2D
         {
             GameObject go = Instantiate(wastePrefabs.First(w => w.Type == type).gameObject);
             go.transform.position = transform.position;
+            go.transform.Rotate(Vector3.forward * Random.Range(-180f, 180f));
+            go.GetComponent<Rigidbody2D>().velocity = -transform.up * 10f;
 
             StopAllCoroutines();
             StartCoroutine(EBlinkLight());

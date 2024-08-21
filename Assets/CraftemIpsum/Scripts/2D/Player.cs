@@ -6,7 +6,6 @@ namespace CraftemIpsum._2D
 {
     public class Player : MonoBehaviour
     {
-        
         [Header("Parameters")]
         [SerializeField] private float speed = 2f;
         [SerializeField] private float inAirMovingAbility = 0.75f;
@@ -110,7 +109,7 @@ namespace CraftemIpsum._2D
             if (!_current)
             {
                 if(_wastesAround.Count > 0)
-                    DoPickUp(_wastesAround[UnityEngine.Random.Range(0, _wastesAround.Count)]);
+                    DoPickUp(_wastesAround[Random.Range(0, _wastesAround.Count)]);
                 return;
             }
 
@@ -126,6 +125,7 @@ namespace CraftemIpsum._2D
             r.simulated = true;
             _current.transform.SetParent(null);
             _current.GetComponentInChildren<SpriteRenderer>().sortingOrder = 2;
+            _current.GetComponent<Rigidbody2D>().AddForce(-transform.up * 30f, ForceMode2D.Impulse);
 
             Invoke(nameof(ReleaseObject), .5f);
         }

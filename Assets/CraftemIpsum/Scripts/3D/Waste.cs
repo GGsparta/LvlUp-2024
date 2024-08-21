@@ -62,14 +62,13 @@ namespace CraftemIpsum._3D
         private void OnTriggerEnter(Collider other)
         {
             if (other.name.Contains("WastePortal"))
-            {
-                PortalColor color = other.name switch
-                {
-                    "Red" => PortalColor.RED,
-                    "Blue" => PortalColor.BLUE,
-                    _ => PortalColor.GREEN
-                };
-
+            {                
+                // pas beau mais fonctionnel
+                PortalColor color;
+                if (other.name.Contains("Red")) color = PortalColor.RED;
+                else if (other.name.Contains("Blue")) color = PortalColor.BLUE;
+                else color = PortalColor.GREEN;
+            
                 _manager.EmitWasteEvent(new WasteData
                 {
                     type = wasteType,
