@@ -23,22 +23,14 @@ namespace CraftemIpsum.UI
         private void LaunchIdle()
         {
             DOTween.Kill(this);
-            
-            //boostFill.transform.localScale = Vector3.one;
             boostFill.fillAmount = 1;
             _outline.enabled = true;
-            
-            /*boostFill.transform.DOScale(1.05f, .5f)
-                .SetLoops(-1, LoopType.Yoyo)
-                .SetEase(Ease.InOutSine)
-                .SetTarget(this);*/
         }
 
         private void LaunchFill(float duration)
         {
             DOTween.Kill(this);
             
-            //boostFill.transform.localScale = Vector3.one * .95f;
             boostFill.fillAmount = 0;
             _outline.enabled = false;
 
