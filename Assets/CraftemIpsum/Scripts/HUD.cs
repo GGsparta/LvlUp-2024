@@ -1,3 +1,4 @@
+using System;
 using GGL.UI.Window;
 using TMPro;
 using UnityEngine;
@@ -15,7 +16,10 @@ namespace CraftemIpsum
 
         private int _secondsLeftBuffer = -1;
         private int _scoreBuffer = -1;
-        
+
+
+        private void OnEnable() => GameManager.Instance.OnGameOver += ShowGameOver;
+        private void OnDisable() => GameManager.Instance.OnGameOver -= ShowGameOver;
 
         private void Update()
         {
@@ -23,12 +27,6 @@ namespace CraftemIpsum
             {
                 _secondsLeftBuffer = GameManager.Instance.SecondsLeft;
                 RefreshTimer();
-
-                if (_secondsLeftBuffer <= 0)
-                {
-                    GameManager.Instance.Pause();
-                    GameOver();
-                }
             }
             
             if (GameManager.Instance.Score != _scoreBuffer)
@@ -48,7 +46,7 @@ namespace CraftemIpsum
             scoreDisplay.text = $"<b>{_scoreBuffer}</b><i><size=26> déchet(s) recyclé(s)</size></i>";
         }
 
-        private void GameOver()
+        private void ShowGameOver()
         {
             goTimerDisplay.text = timerDisplay.text;
             goScoreDisplay.text = scoreDisplay.text;

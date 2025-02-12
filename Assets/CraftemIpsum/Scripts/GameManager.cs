@@ -14,6 +14,7 @@ namespace CraftemIpsum
         
         public event Action OnPlay;
         public event Action OnPause;
+        public event Action OnGameOver;
 
         public bool IsPlaying { get; private set; }
         public int Score { get; private set; }
@@ -41,6 +42,13 @@ namespace CraftemIpsum
         private void Update()
         {
             SecondsLeft = durationInSeconds - (int)_stopwatch.Elapsed.TotalSeconds;
+            
+            if (IsPlaying && SecondsLeft <= 0)
+            {
+                OnGameOver?.Invoke();
+                IsPlaying = false;
+                _stopwatch.Stop();
+            }
         }
 
         private void OnEnable() => Settings.OnSettingsUpdated += SetupLayout;

@@ -12,6 +12,7 @@ namespace CraftemIpsum._3D
     {
         [SerializeField] private AudioSource collectSound;
         [SerializeField] private AudioSource shootSound;
+        [SerializeField] private AudioSource boostSound;
         [SerializeField] private Transform model;
         [SerializeField] private new Camera camera;
         [SerializeField] private Material fireMaterial;
@@ -106,6 +107,7 @@ namespace CraftemIpsum._3D
             if (Time.timeSinceLevelLoad - _lastBoostUsage < DASH_DURATION + DASH_DELAY) return;
             
             _lastBoostUsage = Time.timeSinceLevelLoad;
+            boostSound.Play();
             OnBoost?.Invoke(DASH_DELAY + DASH_DURATION);
         }
         

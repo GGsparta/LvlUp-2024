@@ -38,7 +38,6 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.00077701965, g: 0.0040905294, b: 0.020102464, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2013,6 +2012,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bg: {fileID: 0}
   display: {fileID: 871581710}
+  countdownFX: {fileID: 8300000, guid: 5fc461ea24c2c36478ccccbc2ddff478, type: 3}
 --- !u!114 &797239234
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2604,6 +2604,7 @@ GameObject:
   - component: {fileID: 1390460175}
   - component: {fileID: 1390460176}
   - component: {fileID: 1390460177}
+  - component: {fileID: 1390460178}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -2638,7 +2639,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 280588784ff851544a317102e207f871, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  durationInSeconds: 180
+  durationInSeconds: 222
   delayBeforeStart: 4
   j1Camera: {fileID: 1951163046}
   j2Camera: {fileID: 523406784}
@@ -2670,6 +2671,24 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1390460178
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1390460174}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 873ed732e88c20247aa4c914fa97d07a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startingAudioClip: {fileID: 8300000, guid: e285a203b76d791479307f0ba51f1920, type: 3}
+  items:
+  - audioClip: {fileID: 8300000, guid: 64df86b5087c70445a870d48a70e7967, type: 3}
+    volumeForClip: 1
+  - audioClip: {fileID: 8300000, guid: bd2e33512c21d3146984c2099f5b1d66, type: 3}
+    volumeForClip: 1
 --- !u!1 &1454706780
 GameObject:
   m_ObjectHideFlags: 0
@@ -3709,6 +3728,26 @@ PrefabInstance:
         type: 3}
       propertyPath: cameraViewportOffset
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3140018768174300108, guid: 437bd52a029db3645849886487bc5fa8,
+        type: 3}
+      propertyPath: m_BackGroundColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3140018768174300108, guid: 437bd52a029db3645849886487bc5fa8,
+        type: 3}
+      propertyPath: m_BackGroundColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3140018768174300108, guid: 437bd52a029db3645849886487bc5fa8,
+        type: 3}
+      propertyPath: m_BackGroundColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3140018768174300108, guid: 437bd52a029db3645849886487bc5fa8,
+        type: 3}
+      propertyPath: m_BackGroundColor.r
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3140018768174300108, guid: 437bd52a029db3645849886487bc5fa8,
         type: 3}

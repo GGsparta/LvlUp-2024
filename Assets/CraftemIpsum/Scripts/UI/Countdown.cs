@@ -1,3 +1,4 @@
+using GGL.Audio.Player;
 using GGL.UI.Window;
 using TMPro;
 using UnityEngine;
@@ -8,12 +9,14 @@ namespace CraftemIpsum.UI
     {
         [SerializeField] private GameObject bg;
         [SerializeField] private TextMeshProUGUI display;
+        [SerializeField] private AudioClip countdownFX;
 
         private int _countdown;
 
         public void StartCountdown()
         {
             _countdown = 3;
+            SoundPlayer.Play(countdownFX);
             Invoke(nameof(Decrement), 1f);
         }
 
@@ -29,6 +32,7 @@ namespace CraftemIpsum.UI
 
             _countdown--;
             display.text = _countdown.ToString();
+            SoundPlayer.Play(countdownFX);
             Invoke(nameof(Decrement), 1f);
         }
     }
